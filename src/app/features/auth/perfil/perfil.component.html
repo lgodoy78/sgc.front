@@ -1,0 +1,47 @@
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-body-tertiary">
+    <div class="card p-15 shadow-sm" style="width: 100%; max-width: 450px;">
+      <div class="text-center mb-4">
+        <img src="assets/images/logo.png" 
+             alt="Logo" 
+             class="img-fluid mb-3"
+             style="max-height: 80px;">
+        <h1 class="h9 mb-2 fw-semibold">Bienvenido</h1>
+        <p class="text-body-secondary">Ingresa a tu cuenta</p>
+      </div>
+  
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-3">
+        <!-- Email -->
+        <div class="mb-3">
+          <label for="empresa" class="form-label">Empresa</label> 
+            <select class="form-select" 
+                    id="empresa"
+                    formControlName="empresa"
+                    [class.is-invalid]="empresa?.invalid && (empresa?.touched || empresa?.dirty)">
+                <option value="" selected>Selecciona una empresa</option>
+                <option *ngFor="let empresa of empresas" [value]="empresa.id">{{ empresa.nombre }}</option>
+            </select>
+        </div>
+   
+  
+        <!-- Mensaje de Error General -->
+        @if (this.errorMessage()) {
+          <div class="alert alert-danger d-flex align-items-center gap-2 mb-3">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            {{ this.errorMessage() }}
+          </div>
+        }
+  
+        <!-- Botón de Acción -->
+        <button type="submit" 
+                class="btn btn-primary w-100 " 
+                [disabled]="form.invalid || isLoading()">
+          @if (isLoading()) {
+            <span class="spinner-border spinner-border-sm mr-5" aria-hidden="true"></span>
+            <span role="status">  Cargando...</span>
+          } @else {
+            Ingresar
+          }
+        </button>
+      </form> 
+    </div>
+  </div>

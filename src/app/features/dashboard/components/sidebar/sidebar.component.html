@@ -1,0 +1,141 @@
+<!-- sidebar.component.html -->
+<aside
+  class="sidebar"
+  [class.collapsed]="this.isCollapsed()"
+  [class.show]="this.isMobileMenuOpen()"
+>
+  <div class="sidebar-content">
+    <!-- Logo y Toggle -->
+    <div class="sidebar-header p-3">
+      <div class="d-flex align-items-center justify-content-between">
+        <img
+          src="assets/images/logo.png"
+          class="logo-icon"
+          *ngIf="this.isCollapsed()"
+        />
+        <img
+          src="assets/images/logo2.jpg"
+          class="logo-full"
+          *ngIf="!this.isCollapsed()"
+        />
+        <button
+          class="btn btn-outline-secondary btn-toggle btn-sm"
+          (click)="this.toggleCollapse()"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+        <button
+          class="btn btn-outline-secondary btn-close-aside btn-sm hide"
+          (click)="this.toggleMobileMenu()"
+        >
+          <i class="fas fa-close"></i>
+        </button>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <a href="#">
+        <i class="fas fa-home"></i>
+        <span *ngIf="!isCollapsed()">Inicio</span>
+      </a>
+
+      <li class="dropdown">
+        <a href="#">
+          <i class="fas fa-cog me-3"></i>
+          <span *ngIf="!isCollapsed()">Configuraciónes</span>
+        </a>
+        <ul>
+          <!-- Estructura Organizativa -->
+          <li class="dropdown">
+            <a href="#" (click)="toggleTree('estructura', $event)"> 
+              <i class="fa-duotone fa-sitemap"></i>
+              <span *ngIf="!isCollapsed()">Estructura Organizativa</span>
+              <i
+                class="fas fa-chevron-down float-end"
+                [class.rotated]="isSubmenuOpen('estructura')"
+              ></i>
+            </a>
+            <ul
+              class="submenu"
+              [class.show]="isSubmenuOpen('estructura') && !isCollapsed()"
+            >
+              <li><a href="#">Configurar Empresa</a></li>
+              <li><a href="#">Configurar Sucursales</a></li>
+              <li><a href="#">Configurar Subentidades</a></li>
+              <li><a href="#">Configurar Cargos</a></li>
+              <li><a href="#">Ficha Colaboradores</a></li>
+              <li><a href="#">Configurar Organigrama</a></li>
+            </ul>
+          </li>
+
+          <!-- Metodologias -->
+          <li class="dropdown">
+            <a href="#" (click)="toggleTree('metodologias', $event)"> 
+              <i class="fa-duotone fa-folder-gear"></i>
+              <span *ngIf="!isCollapsed()">Metodologias</span>
+              <i
+                *ngIf="!isCollapsed()"
+                class="fas float-end"
+                [class.fa-chevron-right]="!isSubmenuOpen('metodologias')"
+                [class.fa-chevron-down]="isSubmenuOpen('metodologias')"
+              ></i>
+            </a>
+            <ul
+              class="submenu"
+              *ngIf="isSubmenuOpen('metodologias') && !isCollapsed()"
+            >
+              <li><a href="#">Configurar Matriz de Riesgos</a></li>
+              <li><a href="#">Configuración Alcance</a></li>
+              <li><a href="#">Configurar Evaluación de Controles</a></li>
+              <li><a href="#">Configurar Riesgo Residual</a></li>
+            </ul>
+          </li>
+
+          <!-- Ley -->
+          <li class="dropdown">
+            <a href="#" (click)="toggleTree('ley', $event)">
+              <i class="fa-duotone fa-gavel me-3"></i>
+              <span *ngIf="!isCollapsed()">Ley</span>
+              <i
+                *ngIf="!isCollapsed()"
+                class="fas float-end"
+                [class.fa-chevron-right]="!isSubmenuOpen('ley')"
+                [class.fa-chevron-down]="isSubmenuOpen('ley')"
+              ></i>
+            </a>
+            <ul class="submenu" *ngIf="isSubmenuOpen('ley') && !isCollapsed()">
+              <li><a href="#">Configurar de Grupo delito</a></li>
+              <li><a href="#">Configurar Sanciones Penales</a></li>
+              <li><a href="#">Mantenedor de Sanciones Penales</a></li>
+              <li><a href="#">Configurar de Categoria</a></li>
+              <li><a href="#">Configurador de Leyes</a></li>
+              <li><a href="#">Mantenedor de Leyes</a></li>
+            </ul>
+          </li>
+
+          <!-- Procesos -->
+          <li class="dropdown">
+            <a href="#" (click)="toggleTree('procesos', $event)">
+              <i class="fa-duotone fa-wrench me-3"></i>
+              <span *ngIf="!isCollapsed()">Procesos</span>
+              <i
+                *ngIf="!isCollapsed()"
+                class="fas float-end"
+                [class.fa-chevron-right]="!isSubmenuOpen('procesos')"
+                [class.fa-chevron-down]="isSubmenuOpen('procesos')"
+              ></i>
+            </a>
+            <ul
+              class="submenu"
+              *ngIf="isSubmenuOpen('procesos') && !isCollapsed()"
+            >
+              <li><a href="#">Configurar Macro Proceso</a></li>
+              <li><a href="#">Configurar Proceso</a></li>
+              <li><a href="#">Configurar Subproceso</a></li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</aside>

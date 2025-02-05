@@ -1,0 +1,49 @@
+/* Asegurar altura completa */
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--background);
+  position: relative;
+  overflow: hidden;
+}
+ 
+/* Contenido principal */
+.main-content {
+  flex: 1; 
+  transition: margin-left 0.3s ease;
+}
+
+
+.content-container {
+  flex: 1;
+  position: relative;
+  overflow-y: auto;
+  margin-top: 70px;;
+  min-height: calc(100vh - 70px); /* Altura del header */ 
+}
+
+
+/* Ajustes adicionales para alineación */
+.d-flex.justify-content-between {
+  width: 100%;
+}
+
+.dropdown-menu {
+  min-width: 200px;
+}
+
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  
+  .main-content {
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+ 
+ 
+}
+
+ 

@@ -1,0 +1,96 @@
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-body-tertiary">
+  <div class="card p-15 shadow-sm" style="width: 100%; max-width: 450px;">
+    <div class="text-center mb-4">
+      <img src="assets/images/logo.png" 
+           alt="Logo" 
+           class="img-fluid mb-3"
+           style="max-height: 80px;">
+      <h1 class="h9 mb-2 fw-semibold">Bienvenido</h1>
+      <p class="text-body-secondary">Ingresa a tu cuenta</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mb-3">
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <input type="email" 
+               class="form-control" 
+               id="email"
+               formControlName="email"
+               [class.is-invalid]="email?.invalid && (email?.touched || email?.dirty)"
+               placeholder="tucorreo@example.com">
+        
+        @if (email?.invalid && (email?.touched || email?.dirty)) {
+          <div class="invalid-feedback">
+            @if (email?.errors?.['required']) {
+              <span>El email es requerido</span>
+            }
+            @if (email?.errors?.['email']) {
+              <span>Formato de email inválido</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Contraseña -->
+      <div class="mb-5">
+        <label for="password" class="form-label">Contraseña</label>
+        <div class="position-relative">
+          <input type="password" 
+                 class="form-control pe-5" 
+                 id="password"
+                 formControlName="password"
+                 [class.is-invalid]="password?.invalid && (password?.touched || password?.dirty)"
+                 placeholder="••••••••"
+                 [type]="showPassword ? 'text' : 'password'">
+          
+          <button type="button" 
+                  class="btn btn-link position-absolute top-50 end-5 translate-middle-y" 
+                  (click)="togglePasswordVisibility()"
+                  aria-label="Mostrar/ocultar contraseña"
+                  *ngIf="password?.valid && (password?.touched || password?.dirty)">
+              <i class="fa-solid" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+          </button>
+        </div>
+      
+        @if (password?.invalid && (password?.touched || password?.dirty)) {
+          <div class="invalid-feedback">
+            @if (password?.errors?.['required']) {
+              <span>La contraseña es requerida</span>
+            }
+            @if (password?.errors?.['minlength']) {
+              <span>Mínimo 6 caracteres</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Mensaje de Error General -->
+      @if (this.errorMessage()) {
+        <div class="alert alert-danger d-flex align-items-center gap-2 mb-3">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          {{ this.errorMessage() }}
+        </div>
+      }
+
+      <!-- Botón de Acción -->
+      <button type="submit" 
+              class="btn btn-primary w-100 " 
+              [disabled]="form.invalid || isLoading()">
+        @if (isLoading()) {
+          <span class="spinner-border spinner-border-sm mr-5" aria-hidden="true"></span>
+          <span role="status">  Cargando...</span>
+        } @else {
+          Iniciar Sesión
+        }
+      </button>
+    </form>
+
+    <div class="text-center pt-5">
+      <a routerLink="/recovery" 
+         class="text-decoration-none text-body-secondary">
+        ¿Olvidaste tu contraseña?
+      </a>
+    </div>
+  </div>
+</div>
