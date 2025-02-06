@@ -1,20 +1,32 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { filter, lastValueFrom, tap } from 'rxjs';
+import { filter, lastValueFrom, Observable, tap } from 'rxjs';
 import { Utilities } from './utilities';
+
+export interface UsuarioInterface {
+  idUsuario: number;
+  nombreUsuario: string;
+  idRol: number;
+  rol:string;
+  rutEmpresa: number;
+}
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  
   private utilities = inject(Utilities);
   private http = inject(HttpClient);
   private router = inject(Router);
 
   private accessToken = signal<string | null>(null);
-  private usuarioState = signal({
+  private usuarioState = signal<UsuarioInterface>({
     idUsuario: 0,
-    usuario: '',
+    nombreUsuario: '',
+    idRol: 0,
     rol: '',
+    rutEmpresa: 0
   });
  
   logicApiUrl = '';
@@ -50,9 +62,12 @@ export class AuthService {
 
   private initializeAuth() {
     const storedToken = localStorage.getItem('accessToken');
-
     if (storedToken) {
       this.accessToken.set(storedToken);
+    }
+    const storedUsuario = localStorage.getItem('usuarioState');
+    if (storedUsuario) {
+      this.usuarioState.set(JSON.parse(storedUsuario!) as UsuarioInterface);
     }
   }
 
@@ -68,35 +83,46 @@ export class AuthService {
 
     this.usuarioState.update((state) => ({
       ...state,
-      usuario: response.nombreUsuario,
+      nombreUsuario: response.nombreUsuario,
       idUsuario: response.idUsuario,
       rol: response.rol,
+      idRol: response.idRol,
     }));
-
-    // localStorage.setItem('accessToken', response.accessToken);
-    //  this.isAuthenticated.set(true);
+    localStorage.setItem('usuarioState', JSON.stringify(this.usuarioState()));
     return response;
   }
 
-  async Auth(rutEmpresa: string): Promise<any> {
-    const usuario = this.usuarioState().usuario;
-    const idUsuario = this.usuarioState().idUsuario;
-    const rol = this.usuarioState().rol;
+  async Auth(rutEmpresa: any): Promise<any> {
+    const nombreUsuario = this.usuarioState().nombreUsuario;
+    const idUsuario = this.usuarioState().idUsuario; 
+    const idRol = this.usuarioState().idRol;
     const minutosToken = 90;
 
     const response = await lastValueFrom(
       this.http.post<any>(`${this.logicApiUrl}/api/login/token`, {
-        usuario,
+        nombreUsuario,
         rutEmpresa,
-        rol,
+        idRol,
         idUsuario,
         minutosToken,
       })
     );
 
+    this.usuarioState.update((state) => ({
+      ...state,
+      rutEmpresa: rutEmpresa
+    }));
+
     localStorage.setItem('accessToken', response.token);
-    this.isAuthenticated.set(true);
+    localStorage.setItem('usuarioState', JSON.stringify(this.usuarioState()));
+    this.isAuthenticated.set(true); 
+    
     return response;
+  }
+
+  listaEmpresasUsuario() : Observable<any> { 
+    const idUsuario = this.usuarioState().idUsuario;
+    return this.http.get(`${this.logicApiUrl}/api/login/empresas/usuario/${idUsuario}`);
   }
 
   logout() {
@@ -108,5 +134,8 @@ export class AuthService {
 
   get currentAccessToken() {
     return this.accessToken();
+  }
+  get getUsuarioState() {
+    return this.usuarioState();
   }
 }

@@ -18,7 +18,7 @@
                     formControlName="empresa"
                     [class.is-invalid]="empresa?.invalid && (empresa?.touched || empresa?.dirty)">
                 <option value="" selected>Selecciona una empresa</option>
-                <option *ngFor="let empresa of empresas" [value]="empresa.id">{{ empresa.nombre }}</option>
+                <option *ngFor="let empresa of empresas" [value]="empresa.rutEmpresa">{{ empresa.razonSocial }}</option>
             </select>
         </div>
    

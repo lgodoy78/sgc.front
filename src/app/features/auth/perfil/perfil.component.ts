@@ -11,16 +11,16 @@ import { ThemeService } from 'src/app/core/services/theme.service';
   imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.scss',
-}) 
-export default class PerfilComponent { 
+})
+export default class PerfilComponent {
   form = this.fb.group({
-    empresa: ['', [Validators.required]] 
+    empresa: ['', [Validators.required]],
   });
- 
+
   isLoading = signal(false);
   errorMessage = signal<string>('');
   showPassword = false;
-  empresas: any[] = [];
+  empresas: any;
 
   constructor(
     private fb: FormBuilder,
@@ -39,11 +39,14 @@ export default class PerfilComponent {
   }
 
   loadEmpresas() {
-    this.empresas = [
-      { id: 1, nombre: 'Empresa 1' },
-      { id: 2, nombre: 'Empresa 2' },
-      { id: 3, nombre: 'Empresa 3' },
-    ];
+    this.authService.listaEmpresasUsuario().subscribe((response) => {
+      this.empresas = response;
+
+      if (response.length === 1) {
+        const empresa = this.empresas[0].rutEmpresa;
+        this.authorize(empresa); 
+      }
+    });
   }
 
   async onSubmit() {
@@ -55,36 +58,39 @@ export default class PerfilComponent {
     this.isLoading.set(true);
     this.errorMessage.set('');
 
-    const empresa = this.form.value.empresa?.trim() || ''; 
-      
-      if (!this.validateForm(empresa)) return; 
-  
-      var response = await this.authService.Auth(empresa); 
-      if (!response){
-        this.errorMessage.set("Credenciales inválidas");
-        return;
-      }
-      if (response.codigoError > 0){
-        this.errorMessage.set(response.mensajeError);
-        return;
-      }
- 
-      this.isLoading.set(false);
-      await this.router.navigate(['/dashboard']);
+    const empresa = this.form.value.empresa?.trim() || '';
+
+    if (!this.validateForm(empresa)) return;
+
+   await this.authorize(empresa);
+    
+  }
+
+  private async authorize(empresa: string) {
+    var response = await this.authService.Auth(empresa);
+    if (!response) {
+      this.errorMessage.set('Credenciales inválidas');
+      return;
+    }
+    if (response.codigoError > 0) {
+      this.errorMessage.set(response.mensajeError);
+      return;
+    }
+
+    this.isLoading.set(false);
+    await this.router.navigate(['/dashboard']);
   }
 
   private validateForm(empresa: string): boolean {
     if (!empresa) {
       this.errorMessage.set('Por favor complete todos los campos');
       return false;
-    } 
-    
+    }
+
     return true;
   }
-   
- 
+
   get empresa() {
     return this.form.get('empresa');
-  } 
- 
+  }
 }

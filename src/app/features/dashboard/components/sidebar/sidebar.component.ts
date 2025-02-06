@@ -1,4 +1,3 @@
-
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -9,38 +8,41 @@ import { SidebarService } from 'src/app/core/services/sidebar.service';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './sidebar.component.html',
-  styleUrls: ['./sidebar.component.scss']
+  styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
   sidebar = inject(SidebarService);
-  
+
   isCollapsed = computed(() => this.sidebar.menuState().isCollapsed);
   isMobileMenuOpen = computed(() => this.sidebar.menuState().isMobileMenuOpen);
 
-  isTreeOpen = false;  
- 
-  
+  isTreeOpen = false;
+  submenuStates: Record<string, boolean> = {};
+  menuItems: any;
+
+  constructor() {
+    this.loadMenuItems();
+    //this.initializeSubmenuStates(this.menuItems);
+  }
 
   toggleCollapse() {
-    this.sidebar.menuState.update(state => ({
+    this.sidebar.menuState.update((state) => ({
       ...state,
       isCollapsed: !state.isCollapsed,
     }));
-  } 
+  }
   toggleMobileMenu() {
-    this.sidebar.menuState.update(state => ({
+    this.sidebar.menuState.update((state) => ({
       ...state,
       isMobileMenuOpen: !state.isMobileMenuOpen,
     }));
   }
 
-  // Objeto para controlar el estado de cada submenú
-  submenuStates: { [key: string]: boolean } = {
-    estructura: false,
-    metodologias: false,
-    ley: false,
-    procesos: false
-  };
+  loadMenuItems() {
+    this.sidebar.listaMenu().subscribe((response) => {
+      this.menuItems = response;
+    });
+  }
 
   toggleTree(submenuKey: string, event: Event) {
     event.preventDefault();
@@ -52,4 +54,14 @@ export class SidebarComponent {
     return this.submenuStates[submenuKey];
   }
 
+  // Inicializa todos los submenús como cerrados
+  private initializeSubmenuStates(items: any) {
+    items.forEach((item: { children: any; id: string | number }) => {
+      if (item.children) {
+        this.submenuStates[item.id] = false;
+        this.initializeSubmenuStates(item.children);
+      }
+    });
+  }
 }
+

@@ -32,110 +32,69 @@
         </button>
       </div>
     </div>
-
+   
     <ul class="sidebar-menu">
-      <a href="#">
-        <i class="fas fa-home"></i>
-        <span *ngIf="!isCollapsed()">Inicio</span>
-      </a>
-
       <li class="dropdown">
-        <a href="#">
-          <i class="fas fa-cog me-3"></i>
-          <span *ngIf="!isCollapsed()">Configuraciónes</span>
+        <a href="#"> 
+          <i class="me-3 text-menu fa-solid fa-gauge"></i>
+          <span class="text-menu" *ngIf="!isCollapsed()">Dashboard</span>
         </a>
         <ul>
           <!-- Estructura Organizativa -->
           <li class="dropdown">
-            <a href="#" (click)="toggleTree('estructura', $event)"> 
-              <i class="fa-duotone fa-sitemap"></i>
-              <span *ngIf="!isCollapsed()">Estructura Organizativa</span>
-              <i
-                class="fas fa-chevron-down float-end"
-                [class.rotated]="isSubmenuOpen('estructura')"
-              ></i>
-            </a>
-            <ul
-              class="submenu"
-              [class.show]="isSubmenuOpen('estructura') && !isCollapsed()"
-            >
-              <li><a href="#">Configurar Empresa</a></li>
-              <li><a href="#">Configurar Sucursales</a></li>
-              <li><a href="#">Configurar Subentidades</a></li>
-              <li><a href="#">Configurar Cargos</a></li>
-              <li><a href="#">Ficha Colaboradores</a></li>
-              <li><a href="#">Configurar Organigrama</a></li>
-            </ul>
-          </li>
-
-          <!-- Metodologias -->
-          <li class="dropdown">
-            <a href="#" (click)="toggleTree('metodologias', $event)"> 
-              <i class="fa-duotone fa-folder-gear"></i>
-              <span *ngIf="!isCollapsed()">Metodologias</span>
-              <i
-                *ngIf="!isCollapsed()"
-                class="fas float-end"
-                [class.fa-chevron-right]="!isSubmenuOpen('metodologias')"
-                [class.fa-chevron-down]="isSubmenuOpen('metodologias')"
-              ></i>
-            </a>
-            <ul
-              class="submenu"
-              *ngIf="isSubmenuOpen('metodologias') && !isCollapsed()"
-            >
-              <li><a href="#">Configurar Matriz de Riesgos</a></li>
-              <li><a href="#">Configuración Alcance</a></li>
-              <li><a href="#">Configurar Evaluación de Controles</a></li>
-              <li><a href="#">Configurar Riesgo Residual</a></li>
-            </ul>
-          </li>
-
-          <!-- Ley -->
-          <li class="dropdown">
-            <a href="#" (click)="toggleTree('ley', $event)">
-              <i class="fa-duotone fa-gavel me-3"></i>
-              <span *ngIf="!isCollapsed()">Ley</span>
-              <i
-                *ngIf="!isCollapsed()"
-                class="fas float-end"
-                [class.fa-chevron-right]="!isSubmenuOpen('ley')"
-                [class.fa-chevron-down]="isSubmenuOpen('ley')"
-              ></i>
-            </a>
-            <ul class="submenu" *ngIf="isSubmenuOpen('ley') && !isCollapsed()">
-              <li><a href="#">Configurar de Grupo delito</a></li>
-              <li><a href="#">Configurar Sanciones Penales</a></li>
-              <li><a href="#">Mantenedor de Sanciones Penales</a></li>
-              <li><a href="#">Configurar de Categoria</a></li>
-              <li><a href="#">Configurador de Leyes</a></li>
-              <li><a href="#">Mantenedor de Leyes</a></li>
-            </ul>
-          </li>
-
-          <!-- Procesos -->
-          <li class="dropdown">
-            <a href="#" (click)="toggleTree('procesos', $event)">
-              <i class="fa-duotone fa-wrench me-3"></i>
-              <span *ngIf="!isCollapsed()">Procesos</span>
-              <i
-                *ngIf="!isCollapsed()"
-                class="fas float-end"
-                [class.fa-chevron-right]="!isSubmenuOpen('procesos')"
-                [class.fa-chevron-down]="isSubmenuOpen('procesos')"
-              ></i>
-            </a>
-            <ul
-              class="submenu"
-              *ngIf="isSubmenuOpen('procesos') && !isCollapsed()"
-            >
-              <li><a href="#">Configurar Macro Proceso</a></li>
-              <li><a href="#">Configurar Proceso</a></li>
-              <li><a href="#">Configurar Subproceso</a></li>
-            </ul>
-          </li>
+            <a href="#"> 
+              <i class=" fad fa-home"></i>
+              <span *ngIf="!isCollapsed()">Inicio</span> 
+            </a> 
+          </li> 
         </ul>
-      </li>
+      </li> 
+      <!-- Iteramos menú -->
+      <ng-container *ngFor="let item of menuItems">
+        <li class="dropdown">
+          <a href="#">
+            <i class="me-3 text-menu" [class]="item.icono"></i>
+            <span class="text-menu" *ngIf="!isCollapsed()">{{
+              item.descripcion
+            }}</span>
+            <i *ngIf="item.hijos && !isCollapsed()" class="float-end"></i>
+          </a>
+
+          <!-- Submenús anidados -->
+          <ul>
+            <li *ngFor="let child of item.hijos" class="dropdown">
+              <a
+                href="#"
+                (click)="child.hijos ? toggleTree(child.id, $event) : null"
+                [class.has-hijos]="child.hijos"
+              >
+                <i [class]="child.icono"></i>
+                <span  *ngIf="!isCollapsed()">{{ child.descripcion }}</span>
+                <i
+                  *ngIf="child.hijos && !isCollapsed()"
+                  class="fas float-end"
+                  [class.fa-chevron-down]="!isSubmenuOpen(child.id)"
+                  [class.fa-chevron-up]="isSubmenuOpen(child.id)"
+                ></i>
+              </a>
+
+              <!-- Procesos -->
+              <ul
+                class="submenu"
+                [class.show]="isSubmenuOpen(child.id) && !isCollapsed()"
+                *ngIf="child.hijos"
+              >
+                <li *ngFor="let subChild of child.hijos">
+                  <a href="#">
+                    <i [class]="subChild.icono"></i>
+                    <span>{{ subChild.descripcion }}</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ng-container>
     </ul>
   </div>
 </aside>
