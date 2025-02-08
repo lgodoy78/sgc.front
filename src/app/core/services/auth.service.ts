@@ -7,6 +7,7 @@ import { Utilities } from './utilities';
 export interface UsuarioInterface {
   idUsuario: number;
   nombreUsuario: string;
+  correoUsuario: string;
   idRol: number;
   rol:string;
   rutEmpresa: number;
@@ -24,6 +25,7 @@ export class AuthService {
   private usuarioState = signal<UsuarioInterface>({
     idUsuario: 0,
     nombreUsuario: '',
+    correoUsuario: '',
     idRol: 0,
     rol: '',
     rutEmpresa: 0
@@ -84,6 +86,7 @@ export class AuthService {
     this.usuarioState.update((state) => ({
       ...state,
       nombreUsuario: response.nombreUsuario,
+      correoUsuario: mailUsuario,
       idUsuario: response.idUsuario,
       rol: response.rol,
       idRol: response.idRol,

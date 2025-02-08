@@ -1,0 +1,36 @@
+
+#kt_quick_user {
+    overscroll-behavior: contain;
+    scrollbar-color: #006ab4 #F3F6F9 !important;
+    scrollbar-width: thin !important;
+  }
+  
+  #kt_quick_user::-webkit-scrollbar,
+  #kt_quick_user_content::-webkit-scrollbar {
+    width: 8px;
+    background-color: #F3F6F9;
+    border-radius: 10px;
+  }
+  
+  #kt_quick_user::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px #F3F6F9;
+    border-radius: 10px;
+  }
+  
+  #kt_quick_user::-webkit-scrollbar-thumb {
+    background: #006ab4;
+    border-radius: 10px;
+  }
+  
+  #kt_quick_user::-webkit-scrollbar-thumb:hover {
+    background: #3699ff;
+    border-radius: 10px;
+    cursor: grab;
+  }
+  
+  #kt_quick_user::-webkit-scrollbar-thumb:active {
+    background: #006ab4;
+    border-radius: 10px;
+    cursor: grabbing;
+  }
+  

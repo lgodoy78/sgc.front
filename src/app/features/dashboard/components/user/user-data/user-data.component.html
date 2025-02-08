@@ -1,0 +1,92 @@
+<!--begin::Header-->
+<div class="align-items-center mt-5">
+  <div class="text-center" *ngIf="loadingFicha">
+    <ngx-skeleton-loader
+      count="1"
+      appearance="circle"
+      animation="progress"
+      [theme]="{
+        height: '90px',
+        width: '90px',
+        'border-radius': '50%',
+        margin: '0'
+      }"
+    ></ngx-skeleton-loader>
+
+    <div class="profile-details-section">
+      <ngx-skeleton-loader
+        count="1"
+        appearance="line"
+        animation="progress"
+        [theme]="{ height: '20px', margin: '.5rem 0' }"
+      ></ngx-skeleton-loader>
+      <ngx-skeleton-loader
+        count="1"
+        appearance="line"
+        animation="progress"
+        [theme]="{ height: '16px', 'margin-bottom': '0.25rem' }"
+      ></ngx-skeleton-loader>
+      <ngx-skeleton-loader
+        count="1"
+        appearance="line"
+        animation="progress"
+        [theme]="{ height: '16px', width: '80%', 'margin-bottom': '0.25rem' }"
+      ></ngx-skeleton-loader>
+      <ngx-skeleton-loader
+        count="1"
+        appearance="line"
+        animation="progress"
+        [theme]="{ height: '16px', width: '80%', 'margin-bottom': '0.25rem' }"
+      ></ngx-skeleton-loader>
+    </div>
+  </div>
+  <div class="text-center" *ngIf="!loadingFicha">
+    <div *ngIf="mostrarFoto" class="symbol symbol-circle symbol-xl-90">
+      <div class="symbol-label" *ngIf="tieneFoto; else fotoDefault"></div>
+      <ng-template #fotoDefault>
+        <div
+          class="symbol-label"
+          style="background-image: url('assets/images/user-avatar.png')"
+        ></div>
+      </ng-template>
+      <i class="symbol-badge symbol-badge-bottom bg-success" aria-hidden="true">
+      </i>
+    </div>
+    <h4 class="font-weight-bolder my-2 word-break-break">
+      {{ this.authService.getUsuarioState.nombreUsuario | titlecase }}
+    </h4>
+    <div class="text-muted mb-1 word-break-break">
+      <span class="icon"
+        ><i class="fa-duotone fa-solid fa-building" aria-hidden="true"></i
+      ></span>
+      <span class="texto-user-data ms-3">RishTech Soluciones Riesgos y Cumplimientos</span>
+    </div>
+    <div class="text-muted mb-1 word-break-break">
+      <span class="icon"
+        ><i class="fa-duotone fa-solid fa-envelope" aria-hidden="true"> </i
+      ></span>
+      <span class="texto-user-data ms-3">{{
+        this.authService.getUsuarioState.correoUsuario
+      }}</span>
+    </div>
+    <div class="text-muted mb-1 word-break-break">
+      <span class="icon"
+        ><i class="fa-solid fa-address-book" aria-hidden="true"> </i
+      ></span>
+      <span class="texto-user-data ms-3">{{
+        this.authService.getUsuarioState.rol
+      }}</span>
+    </div>
+  </div>
+  <div class="separator separator-dashed mt-8 mb-5"></div>
+  <div class="navi navi-spacer-x-0 p-0">
+    <div class="mt-4" *ngIf="loadingFicha">
+      <ngx-skeleton-loader
+        count="2"
+        appearance="line"
+        animation="progress"
+        [theme]="{ height: '17px', 'margin-bottom': '.375rem' }"
+      ></ngx-skeleton-loader>
+    </div>
+  </div>
+</div>

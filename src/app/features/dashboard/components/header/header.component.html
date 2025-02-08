@@ -1,46 +1,74 @@
- <header class="header hadow-sm p-3"  [style.margin-left.px]="sidebar.currentWidth"  >
-    <div class="container-fluid h-100">
-      
+<header
+  class="header hadow-sm p-3"
+  [style.margin-left.px]="sidebar.currentWidth"
+>
+  <div class="container-fluid h-100">
+    <div class="d-flex justify-content-between align-items-center h-100 w-100">
+      <!-- Parte Izquierda -->
+      <div class="d-flex align-items-center gap-3">
+        <button
+          class="btn btn-outline-secondary btn-toggle-sidebar btn-sm"
+          (click)="toggleMobileMenu()"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+        <h4 class="d-none d-md-block">Inicio</h4>
+      </div>
 
-      <div class="d-flex justify-content-between align-items-center h-100 w-100">
-        <!-- Parte Izquierda -->
-        <div class="d-flex align-items-center gap-3">
-          <button class="btn btn-outline-secondary btn-toggle-sidebar btn-sm " (click)="toggleMobileMenu()">
-            <i class="fas fa-bars"></i>
-          </button> 
-          <h4 class="d-none d-md-block">Inicio</h4>
-        </div>
+      <!-- Parte Derecha (Botones alineados a la derecha) -->
+      <div class="d-flex align-items-center gap-3">
+        <button
+          class="btn btn-outline-secondary btn-sm"
+          (click)="themeService.toggleTheme()"
+        >
+          <i
+            class="fas"
+            [class.fa-sun]="themeService.currentTheme() === 'light'"
+            [class.fa-moon]="themeService.currentTheme() === 'dark'"
+          ></i>
+        </button>
 
-        <!-- Parte Derecha (Botones alineados a la derecha) -->
-        <div class="d-flex align-items-center gap-3">
-          <button class="btn btn-outline-secondary btn-sm" (click)="themeService.toggleTheme()">
-            <i class="fas" 
-               [class.fa-sun]="themeService.currentTheme() === 'light'" 
-               [class.fa-moon]="themeService.currentTheme() === 'dark'"></i>
-          </button>
-          
-          <div class="dropdown">
-            <button class="btn btn-link text-decoration-none dropdown-toggle" 
-                    type="button" 
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <img src="assets/images/user-avatar.png" 
-                   alt="Usuario" 
-                   class="rounded-circle" 
-                   width="35" 
-                   height="35">
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end shadow">
-              <li><a class="dropdown-item" href="#">
-                <i class="fas fa-user me-2"></i>Perfil
-              </a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item text-danger" (click)="authService.logout()">
-                <i class="fas fa-sign-out-alt me-2"></i>Cerrar sesión
-              </a></li>
-            </ul>
+        <div class="topbar">
+          <div class="topbar-item">
+            <div
+              class="btn btn-icon btn-hover-transparent-white btn-icon-mobile w-md-auto d-flex align-items-center btn-lg px-2"
+              id="kt_quick_user_toggle_full"
+              (click)="user.toggleVerPerfilUser()"
+            >
+              <div class="text-right">
+                <div>
+                  <span
+                    class="font-weight-thin font-size-base d-none d-lg-inline me-2"
+                    >Hola,</span
+                  >
+                  <span
+                    class="font-weight-bolder font-size-base d-none d-lg-inline me-3"
+                    >{{
+                      this.authService.getUsuarioState.nombreUsuario | titlecase
+                    }}</span
+                  >
+                </div>
+                <div>
+                  <span
+                    class="font-weight-thin font-size-base d-none d-lg-inline me-3"
+                  >
+                    {{ this.authService.getUsuarioState.rol| titlecase }}</span
+                  >
+                </div>
+              </div>
+              <div class="symbol symbol-circle">
+                <div
+                    class="symbol-label"
+                    style="
+                      background-image: url('assets/images/user-avatar.png');
+                    "
+                  ></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </header>
+  </div>
+</header>
+<app-user #user></app-user>

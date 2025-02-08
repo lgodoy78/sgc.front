@@ -1,6 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
-import { AuthService } from './auth.service';
+import { Observable } from 'rxjs'; 
 import { Utilities } from './utilities';
 import { HttpClient } from '@angular/common/http';
 
@@ -10,7 +9,6 @@ import { HttpClient } from '@angular/common/http';
 export class SidebarService {
   // Tamaños del sidebar
   private utilities = inject(Utilities);
-  private authService = inject(AuthService);
   private http = inject(HttpClient);
   sidebarWidth = 280;
   collapsedWidth = 80;
@@ -31,9 +29,8 @@ export class SidebarService {
   }
 
   listaMenu(): Observable<any> { 
-    const idRol = this.authService.getUsuarioState.idRol;
     return this.http.get(
-      `${this.logicApiUrl}/api/rolacceso/menu/${idRol}`
+      `${this.logicApiUrl}/api/rolacceso/menu`
     );
   }
 }

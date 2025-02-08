@@ -1,0 +1,29 @@
+<div *ngIf="verPerfilUser" id="kt_quick_user" [ngClass]="verPerfilUser ? 'offcanvas-on' : ''"
+     class="offcanvas offcanvas-right p-10 overflow-auto">
+  <!--begin::Header-->
+  <div class="offcanvas-header d-flex align-items-center justify-content-between">
+    <h3 class="font-weight-bold m-0"></h3>
+    <a role="button" style="cursor: pointer;" class="btn btn-outline-secondary btn-sm" id="kt_quick_user_close"
+       (click)="toggleVerPerfilUser()">
+      <i class="fas fa-close icon-ms text-muted" aria-hidden="true"> </i>
+    </a>
+  </div>
+  <!--end::Header-->
+  <!--begin::Content-->
+  <div class="offcanvas-content" id="kt_quick_user_content">
+    <!--datos Usuario-->
+    <app-user-data></app-user-data>
+    <!--begin::Nav-->
+    <div [hidden]="showButtons" class="navi navi-spacer-x-0 p-0">
+ 
+      <app-user-password></app-user-password>
+ 
+      <app-logout></app-logout>
+      
+      <!--end:Item-->
+    </div>
+   
+  </div> 
+</div>
+
+<div *ngIf="verPerfilUser" class="offcanvas-overlay" (click)="verPerfilUser = !verPerfilUser;"></div>

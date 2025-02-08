@@ -1,0 +1,40 @@
+<a role="button" style="cursor: pointer;" class="navi-item" data-toggle="modal" (click)="openModal(cerrarSesion)">
+    <div class="navi-link">
+      <div class="navi-text">
+        <div class="font-weight-bold">
+          <i class="fad fa-sign-out-alt btn btn-light" aria-hidden="true"
+             style="padding: 7px 13px; margin-right: 6px; --fa-primary-color: #F64E60; --fa-secondary-color: #F64E60;  border-radius: 0.4em;">
+          </i>
+          Cerrar Sesión
+        </div>
+      </div>
+    </div>
+  </a>
+
+  
+<ng-template #cerrarSesion>
+
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="text-center"> 
+        <i class="fa-duotone fa-circle-exclamation" style="--fa-primary-color: #F64E60; --fa-secondary-color: #ee7f8a;  font-size: 50px;" aria-hidden="true"></i>
+      </div>
+
+      <div class="text-center pt-4">
+        <div class="text-center">
+          <span class="text-dark font-weight-bold">¿Está seguro que desea cerrar su sesión?</span>
+        </div>
+      </div>
+
+      <div class="text-center pt-12">
+        <div class="col-lg-6 offset-lg-3">
+          <button type="button" (click)="cierreSesion()" class="btn btn-primary px-12 me-3">Sí</button>
+          <button type="button" class="btn btn-secondary font-weight-bold" data-dismiss="modal"
+                  (click)="hideModal()" aria-label="Close">Cancelar
+          </button>
+        </div>
+      </div>
+    </div> 
+
+  </div>
+</ng-template>

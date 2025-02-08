@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SidebarService } from 'src/app/core/services/sidebar.service';
@@ -48,6 +48,9 @@ export class SidebarComponent {
     event.preventDefault();
     event.stopPropagation();
     this.submenuStates[submenuKey] = !this.submenuStates[submenuKey];
+    if (this.isCollapsed()){
+      this.toggleCollapse();
+    }
   }
 
   isSubmenuOpen(submenuKey: string): boolean {

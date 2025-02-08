@@ -32,32 +32,31 @@
         </button>
       </div>
     </div>
-   
+
     <ul class="sidebar-menu">
       <li class="dropdown">
-        <a href="#"> 
-          <i class="me-3 text-menu fa-solid fa-gauge"></i>
-          <span class="text-menu" *ngIf="!isCollapsed()">Dashboard</span>
+        <a href="#">
+          <i class="me-3 fa-solid fa-gauge"></i>
+          <span *ngIf="!isCollapsed()">Dashboard</span>
         </a>
         <ul>
           <!-- Estructura Organizativa -->
           <li class="dropdown">
-            <a href="#"> 
-              <i class=" fad fa-home"></i>
-              <span *ngIf="!isCollapsed()">Inicio</span> 
-            </a> 
-          </li> 
+            <a href="#">
+              <i class="fad fa-home"></i>
+              <span *ngIf="!isCollapsed()">Inicio</span>
+            </a>
+          </li>
         </ul>
-      </li> 
+      </li>
       <!-- Iteramos menú -->
       <ng-container *ngFor="let item of menuItems">
         <li class="dropdown">
           <a href="#">
-            <i class="me-3 text-menu" [class]="item.icono"></i>
-            <span class="text-menu" *ngIf="!isCollapsed()">{{
+            <i class="me-3" [class]="item.icono"></i>
+            <span *ngIf="!isCollapsed()">{{
               item.descripcion
             }}</span>
-            <i *ngIf="item.hijos && !isCollapsed()" class="float-end"></i>
           </a>
 
           <!-- Submenús anidados -->
@@ -66,10 +65,10 @@
               <a
                 href="#"
                 (click)="child.hijos ? toggleTree(child.id, $event) : null"
-                [class.has-hijos]="child.hijos"
+                [class.has-hijos]="child.hijos" class="nav-link-side"
               >
                 <i [class]="child.icono"></i>
-                <span  *ngIf="!isCollapsed()">{{ child.descripcion }}</span>
+                <span class="menu-text" >{{ child.descripcion }}</span>
                 <i
                   *ngIf="child.hijos && !isCollapsed()"
                   class="fas float-end"
