@@ -33,12 +33,22 @@
                 "input": "public"
               }
             ],
-            "styles": [                
+            "styles": [
               "src/styles.scss",
-              "public/assets/fontawesome6/pro/css/all.min.css"
+              "public/assets/fontawesome6/pro/css/all.min.css",
+              "node_modules/datatables.net-dt/css/dataTables.dataTables.min.css",
+              "node_modules/datatables.net-responsive-dt/css/responsive.dataTables.css",              
+              "node_modules/@swimlane/ngx-datatable/index.css",
+              "node_modules/@swimlane/ngx-datatable/themes/bootstrap.css",
+              "node_modules/@swimlane/ngx-datatable/assets/icons.css",
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css"
             ],
             "scripts": [
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/datatables.net/js/dataTables.min.js",
+              "public/assets/script/datatables.js",
+              "node_modules/datatables.net-responsive/js/dataTables.responsive.js"
             ]
           },
           "configurations": {
@@ -51,7 +61,7 @@
                 },
                 "fonts": false
               },
-              "subresourceIntegrity": true, 
+              "subresourceIntegrity": true,
               "sourceMap": false,
               "namedChunks": true,
               "aot": true,

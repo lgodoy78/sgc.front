@@ -1,0 +1,58 @@
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0">Empresas</h4>
+    <button class="btn btn-primary" (click)="editar()">
+      <i class="fas fa-plus me-2"></i>Nueva Empresa
+    </button>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div *ngIf="!loading" class="card shadow p-6">
+    <div class="card-body p-0">
+      <div class="mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar..."
+          style="width: 300px"
+          (input)="onSearchChange($event)"
+        />
+      </div>
+
+      <div class="datatable-container">
+        <ngx-datatable
+          #datatableWrapper
+          class="bootstrap ngx-table"
+          [rows]="rows"
+          [columns]="columns"
+          [columnMode]="'force'"
+          [headerHeight]="50"
+          [rowHeight]="50"
+          [footerHeight]="50"
+          [limit]="3"
+          [loadingIndicator]="loading" 
+        >
+        </ngx-datatable> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Template para las acciones -->
+<ng-template #actionTemplate let-row="row" let-value="value">
+  <div class="d-flex gap-2">
+    <button class="btn btn-sm btn-clean btn-icon" (click)="editar(row)">
+      <i class="fad fa-pencil text-primary"></i>
+    </button>
+    <button class="btn btn-sm btn-clean btn-icon" (click)="eliminar(row)">
+      <i class="fad fa-trash text-danger"></i>
+    </button>
+  </div>
+</ng-template>

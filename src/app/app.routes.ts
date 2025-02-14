@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { loginGuard } from './core/guards/login.guard';
+import { roleGuard } from './core/guards/role.guard';
  ;
 
 export const routes: Routes = [
@@ -27,18 +28,22 @@ export const routes: Routes = [
     loadComponent: () => import('./features/dashboard/dashboard.component'),
     canActivate: [authGuard],
     children: [
-     /* {
+      /*{
         path: '',
         loadComponent: () => import('./features/dashboard/pages/overview.component')
+      },*/
+      {
+        path: 'configuracion/empresa',
+        loadComponent: () => import('./features/pages/configuracion/empresa/lista-empresas/lista-empresas.component'),
       },
       {
-        path: 'settings',
-        loadComponent: () => import('./features/dashboard/pages/settings.component')
-      },
-      {
+        path: 'configuracion/sucursal',
+        loadComponent: () => import('./features/pages/configuracion/sucursal/lista-sucursal/lista-sucursal.component'),
+      }
+      /*{
         path: 'admin',
         loadComponent: () => import('./admin.component'),
-        canActivate: [authGuard, roleGuard(['admin', 'superadmin'])]
+        canActivate: [authGuard, roleGuard(['admin'])]
       }*/
     ]
   },

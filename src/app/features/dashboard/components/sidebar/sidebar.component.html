@@ -84,7 +84,7 @@
                 *ngIf="child.hijos"
               >
                 <li *ngFor="let subChild of child.hijos">
-                  <a href="#">
+                  <a href="#" routerLink="{{ subChild.ruta }}" class="nav-link-side">
                     <i [class]="subChild.icono"></i>
                     <span>{{ subChild.descripcion }}</span>
                   </a>

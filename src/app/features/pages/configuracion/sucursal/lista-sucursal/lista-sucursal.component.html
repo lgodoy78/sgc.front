@@ -1,0 +1,85 @@
+<!-- company-list.component.html -->
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h4 class="mb-0">Empresas</h4>
+      <button class="btn btn-primary" (click)="editar()">
+        <i class="fas fa-plus me-2"></i>Nueva Empresa
+      </button>
+    </div>
+  
+    <!-- Loading -->
+    <div *ngIf="loading" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Cargando...</span>
+      </div>
+    </div>
+  
+    <!-- Tabla -->
+    <div *ngIf="!loading" class="card shadow p-6">
+      <div class="card-body p-0">
+        <div class="mb-3">
+            <button class="btn btn-success mb-3" (click)="actualizarTabla()">
+                Actualizar Tabla
+              </button>
+        </div> 
+  
+     
+        <div class="table-responsive"> 
+         
+          <table
+            datatable
+            [dtOptions]="dtOptions" 
+            [dtTrigger]="dtTrigger"
+            class="table table-hover table-head-custom row-border hover"
+            id="dtTable"
+          >
+            <thead class="table-dark">
+              <tr>
+                <th scope="col">RUT EMPRESA</th>
+                <th scope="col">DV</th>
+                <th scope="col">RAZON SOCIAL</th>
+                <th scope="col">NOMBRE FANTASIA</th>
+                <th scope="col">E-MAIL</th>
+                <th
+                  scope="col"
+                  data-priority="1"
+                  class="text-center"
+                  style="width: 100px"
+                >
+                  ACCIÓN
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let empresa of this.listadoEmpresas; index as i">
+                <td>
+                  <span>{{ empresa.rutEmpresa }}</span>
+                </td>
+                <td>
+                  <span>{{ empresa.dvRutEmpresa }}</span>
+                </td>
+                <td>
+                  <span>{{ empresa.razonSocial }}</span>
+                </td>
+                <td>
+                  <span>{{ empresa.nombreFantasia }}</span>
+                </td>
+                <td>
+                  <span>{{ empresa.email }}</span>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-clean btn-icon" (click)="editar(empresa)">
+                    <i class="fad fa-pencil text-primary"></i>
+                  </button>
+                  <button class="btn btn-sm btn-clean btn-icon" (click)="eliminar(empresa)">
+                    <i class="fad fa-trash text-danger"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>  
+        </div>
+      </div>
+    </div>
+  </div>
+  

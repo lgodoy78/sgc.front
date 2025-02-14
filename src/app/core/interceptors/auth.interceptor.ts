@@ -26,8 +26,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError(error => {
       switch (error.status) {
         case 401:
-        case 400: 
-          return handle400Error(next, authService, router);
+          return handle401Error(next, authService, router); 
         case 412:
           registrarCsrfToken(error.headers);
           req = agregarCsrfToken(req);
@@ -92,9 +91,8 @@ function setToken(name: string, token: string) {
 }
 
 
- 
-
-function handle400Error( 
+  
+function handle401Error( 
   next: HttpHandlerFn,
   authService: AuthService,
   router: Router

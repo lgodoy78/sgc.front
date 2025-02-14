@@ -1,17 +1,13 @@
-
 <div class="dashboard-container">
- 
-
   <app-sidebar></app-sidebar>
   <main class="main-content" [style.margin-left.px]="sidebar.currentWidth">
-      
     <app-header>
       <ng-content select="[pageTitle]"></ng-content>
     </app-header>
-    
-    <router-outlet></router-outlet>
 
-     
+    <div class="ps-3 pe-3 pt-21 container-fluid">
+      <app-toast-container></app-toast-container>
+      <router-outlet></router-outlet>
+    </div>
   </main>
 </div>
-
