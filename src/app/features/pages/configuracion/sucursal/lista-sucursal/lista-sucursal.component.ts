@@ -7,8 +7,7 @@ import { ToastService } from 'src/app/core/services/toast.service';
 import { EdicionEmpresaComponent } from 'src/app/features/pages/configuracion/empresa/edicion-empresa/edicion-empresa.component'
 import { ConfirmationModalComponent } from 'src/app/features/shared/confirmation-modal.component' 
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
-import { Subject } from 'rxjs';  
-import { Config } from 'datatables.net';
+import { Subject } from 'rxjs';   
 
 @Component({
   selector: 'app-lista-empresas',
@@ -32,8 +31,8 @@ export default class ListaSucursalComponent implements OnInit, AfterViewInit, On
     { rutEmpresa: 2, dvRutEmpresa: 'a', razonSocial: 'Empresa B', nombreFantasia: 'Empresa A', email: 'empresaB@email.com' },
     { rutEmpresa: 3, dvRutEmpresa: 'a', razonSocial: 'Empresa C', nombreFantasia: 'Empresa A',  email: 'empresaC@email.com' },
   ];
-   
-  dtOptions: Config = {};
+    
+  dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
  
  
@@ -45,17 +44,16 @@ export default class ListaSucursalComponent implements OnInit, AfterViewInit, On
       order: [],
       columnDefs: [
         {targets: 4, orderable: false},
-      ]
+      ],
+      responsive:true
     };
-  //  this.getListaEmpresas();
+    this.getListaEmpresas();
     this.loading = false;
   }
 
   ngAfterViewInit() {
      
-    setTimeout(() => {
-      this.dtTrigger.next(this.dtOptions);
-     }, 1);
+    
  
   }
 
@@ -71,6 +69,9 @@ export default class ListaSucursalComponent implements OnInit, AfterViewInit, On
       },
       complete: () => {
         this.loading = false;
+        setTimeout(() => {
+          this.dtTrigger.next(this.dtOptions);
+         }, 1);
       }
     });
   }
@@ -93,7 +94,7 @@ export default class ListaSucursalComponent implements OnInit, AfterViewInit, On
     if (result) {
       this.empresaService.deleteCompany(id).subscribe({
         next: () => {
-          this.rerender3(); 
+          this.actualizarTabla(); 
           this.toastService.showSuccess('Empresa eliminada correctamente');
         },
         error: () => this.toastService.showError('Error al eliminar empresa'),
@@ -103,16 +104,14 @@ export default class ListaSucursalComponent implements OnInit, AfterViewInit, On
   actualizarTabla(){
     this.listadoEmpresas = [
       { rutEmpresa: 1, dvRutEmpresa: 'a', razonSocial: 'Empresa A', nombreFantasia: 'Empresa A', email: 'empresaA@email.com' },
-      { rutEmpresa: 2, dvRutEmpresa: 'a', razonSocial: 'Empresa B', nombreFantasia: 'Empresa A', email: 'empresaB@email.com' },
-      { rutEmpresa: 3, dvRutEmpresa: 'a', razonSocial: 'Empresa C', nombreFantasia: 'Empresa A',  email: 'empresaC@email.com' },
+      { rutEmpresa: 2, dvRutEmpresa: 'a', razonSocial: 'Empresa B', nombreFantasia: 'Empresa A', email: 'empresaB@email.com' }, 
     ];
   
-    this.rerender3();
+    this.rerender();
     
   }
   
   rerender(): void {
-   
     
     this.dtElement.dtInstance.then(dtInstance => {
       // Destroy the table first
@@ -120,26 +119,12 @@ export default class ListaSucursalComponent implements OnInit, AfterViewInit, On
       // Call the dtTrigger to rerender again 
      
       setTimeout(() => {
-      // this.dtTrigger.next(this.dtOptions); 
+       this.dtTrigger.next(this.dtOptions); 
      }, 12);
     })
 
   }
- 
-
-  rerender3(): void {
-     
-    if (this.dtElement && this.dtElement.dtInstance) {
-      this.dtElement.dtInstance.then((dtInstance) => {
-       // dtInstance.destroy(); // 🔴 Destruye la tabla para evitar duplicados
-        dtInstance.clear();
-        setTimeout(() => {
-          this.dtTrigger.next(null); 
-       }, 12);
-      });
-    }
-  }
-  
+   
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
