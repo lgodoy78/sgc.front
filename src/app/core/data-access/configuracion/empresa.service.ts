@@ -19,9 +19,7 @@ export class EmpresaService {
   private empresas = new BehaviorSubject<Empresa[]>([]);
   private utilities = inject(Utilities);
   private http = inject(HttpClient);
-  logicApiUrl = this.utilities.logicApiUrl();
-
-  itemsPerPage = 15;
+  logicApiUrl = this.utilities.logicApiUrl(); 
 
   getListaEmpresas(): Observable<any> {
     return this.http.get(`${this.logicApiUrl}/api/empresa/listar`);

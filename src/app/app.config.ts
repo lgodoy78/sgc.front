@@ -6,6 +6,7 @@ import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { AppExternalConfig } from './core/services/app-external-config';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAnimations(),
     ...ModalModule.forRoot().providers!,
+    CommonModule
   ]
 };
 

@@ -1,0 +1,192 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="modal-header">
+    <h5 class="modal-title">
+      {{ sucursal ? "Editar Sucursal" : "Nueva Sucursal" }}
+    </h5>
+    <button
+      type="button"
+      class="btn-close"
+      (click)="activeModal.dismiss()"
+    ></button>
+  </div>
+
+  <div class="modal-body">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <label class="form-label">Código</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="codSucursal"
+          (keypress)="soloNumeros($event)"
+          (change)="revisaExiste($event)" 
+          #codSucursalInput
+        />
+        <div
+          *ngIf="
+            form.get('codSucursal')?.invalid && form.get('codSucursal')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          Código es requerido
+        </div>
+      </div>
+
+      <div class="col-md-7">
+        <label class="form-label">Sucursal</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="sucursal"
+          maxlength="100"
+        />
+        <div
+          *ngIf="form.get('sucursal')?.invalid && form.get('sucursal')?.touched"
+          class="text-danger mt-1"
+        >
+          Sucursal es requerido
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <label class="form-label">Dirección</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="dirCallle"
+          maxlength="100"
+        />
+      </div>
+
+      <div class="col-md-2">
+        <label class="form-label">Número</label>
+        <input
+          type="number"
+          class="form-control"
+          formControlName="dirNumero"
+          (keypress)="soloNumeros($event)"
+        />
+        <div
+          *ngIf="
+            form.get('dirNumero')?.invalid && form.get('dirNumero')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          Debe ingresar solo números.
+        </div>
+      </div>
+
+      <div class="col-md-2">
+        <label class="form-label">Piso</label>
+        <input
+          type="number"
+          class="form-control"
+          formControlName="dirPiso"
+          (keypress)="soloNumeros($event)"
+        />
+        <div
+          *ngIf="form.get('dirPiso')?.invalid && form.get('dirPiso')?.touched"
+          class="text-danger mt-1"
+        >
+          Debe ingresar solo números.
+        </div>
+      </div>
+
+      <div class="col-md-2">
+        <label class="form-label">Oficina</label>
+        <input
+          type="number"
+          class="form-control"
+          formControlName="dirOficina"
+          (keypress)="soloNumeros($event)"
+        />
+        <div
+          *ngIf="
+            form.get('dirOficina')?.invalid && form.get('dirOficina')?.touched
+          "
+          class="text-danger mt-1"
+        >
+          Debe ingresar solo números.
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Pais</label>
+        <select
+          class="form-select"
+          name="codPais"
+          id="codPais"
+          formControlName="codPais"
+          (change)="clickPais($event)"
+        >
+          <option value="" disabled>Seleccione un pais</option>
+          <option
+            *ngFor="let item of this.listaPaises"
+            [value]="item.codPais"
+            [attr.data-descripcion]="item.pais"
+          >
+            {{ item.pais }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Region</label>
+        <select
+          class="form-select"
+          name="codRegion"
+          id="codRegion"
+          formControlName="codRegion"
+          (change)="clickRegion($event)"
+        >
+          <option value="" disabled>Seleccione una region</option>
+          <option
+            *ngFor="let item of this.listaRegiones"
+            [value]="item.codRegion"
+            [attr.data-descripcion]="item.region"
+          >
+            {{ item.region }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Comuna</label>
+        <select
+          class="form-select"
+          name="codComuna"
+          id="codComuna"
+          formControlName="codComuna"
+        >
+          <option value="" disabled>Seleccione una comuna</option>
+          <option
+            *ngFor="let item of this.listaComunas"
+            [value]="item.codComuna"
+            [attr.data-descripcion]="item.comunas"
+          >
+            {{ item.comunas }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="activeModal.dismiss()"
+    >
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="isSubmitting || form.invalid"
+    >
+      <span
+        *ngIf="isSubmitting"
+        class="spinner-border spinner-border-sm me-1"
+      ></span>
+      {{ sucursal ? "Guardar Cambios" : "Crear Sucursal" }}
+    </button>
+  </div>
+</form>

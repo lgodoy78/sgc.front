@@ -11,10 +11,17 @@
           (click)="toggleMobileMenu()"
         >
           <i class="fas fa-bars"></i>
-        </button>
-        <h4 class="d-none d-md-block">Inicio</h4>
+        </button>  
+        <xng-breadcrumb class="d-none d-md-block"></xng-breadcrumb>
       </div>
-
+      <div class="d-flex align-items-center gap-1"> 
+        <span class="font-weight-thin font-size-base d-none d-lg-inline me-2">Empresa :</span>
+        <img
+          src="{{this.fotoEmpresa}}"
+          class="logo-icon"
+        />
+        <span>{{this.nombreFantasia}}</span>
+      </div>
       <!-- Parte Derecha (Botones alineados a la derecha) -->
       <div class="d-flex align-items-center gap-3">
         <button
@@ -60,9 +67,10 @@
                 <div
                     class="symbol-label"
                     style="
-                      background-image: url('assets/images/user-avatar.png');
+                      background-image: url('{{this.fotoUsuario}}');
                     "
                   ></div>
+                  
               </div>
             </div>
           </div>

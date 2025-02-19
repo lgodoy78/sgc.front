@@ -46,7 +46,7 @@
       <ng-template #fotoDefault>
         <div
           class="symbol-label"
-          style="background-image: url('assets/images/user-avatar.png')"
+          style="background-image: url('{{this.fotoUsuario}}')"
         ></div>
       </ng-template>
       <i class="symbol-badge symbol-badge-bottom bg-success" aria-hidden="true">
@@ -59,7 +59,7 @@
       <span class="icon"
         ><i class="fa-duotone fa-solid fa-building" aria-hidden="true"></i
       ></span>
-      <span class="texto-user-data ms-3">RishTech Soluciones Riesgos y Cumplimientos</span>
+      <span class="texto-user-data ms-3">{{this.datosEmpresa.razonSocial}}</span>
     </div>
     <div class="text-muted mb-1 word-break-break">
       <span class="icon"

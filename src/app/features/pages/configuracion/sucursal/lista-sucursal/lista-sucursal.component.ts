@@ -1,37 +1,34 @@
 import { Component, inject, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EmpresaService } from 'src/app/core/data-access/configuracion/empresa.service';
-import { Empresa } from 'src/app/core/model/empresa.model';
+import { SucursalService } from 'src/app/core/data-access/configuracion/sucursal.service';
+import { Sucursal } from 'src/app/core/model/sucursal.model';
 import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/app/core/services/toast.service';  
-import { EdicionEmpresaComponent } from 'src/app/features/pages/configuracion/empresa/edicion-empresa/edicion-empresa.component'
-import { ConfirmationModalComponent } from 'src/app/features/shared/confirmation-modal.component' 
+import { EdicionSucursalComponent } from 'src/app/features/pages/configuracion/sucursal/edicion-sucursal/edicion-sucursal.component' 
+import { ModalTypeService } from 'src/app/core/services/modal-type.service'
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
-import { Subject } from 'rxjs';   
+import { Subject } from 'rxjs'; 
 
 @Component({
-  selector: 'app-lista-empresas',
+  selector: 'app-lista-sucursal',
   standalone: true,
   imports: [NgbModule, CommonModule, DataTablesModule],
   templateUrl: './lista-sucursal.component.html',
   styleUrl: './lista-sucursal.component.scss'
 })
 export default class ListaSucursalComponent implements OnInit, AfterViewInit, OnDestroy {
-  empresaService = inject(EmpresaService);
+  sucursalService = inject(SucursalService);
   modalService = inject(NgbModal);
   toastService = inject(ToastService);
+  modalTypeService = inject(ModalTypeService);
  
   @ViewChild(DataTableDirective, {static: false})
   dtElement!: DataTableDirective;
 
-  companies: Empresa[] = [];
+  sucursales: Sucursal[] = [];
   loading = true; 
-  listadoEmpresas: any[] = [
-    { rutEmpresa: 1, dvRutEmpresa: 'a', razonSocial: 'Empresa A', nombreFantasia: 'Empresa A', email: 'empresaA@email.com' },
-    { rutEmpresa: 2, dvRutEmpresa: 'a', razonSocial: 'Empresa B', nombreFantasia: 'Empresa A', email: 'empresaB@email.com' },
-    { rutEmpresa: 3, dvRutEmpresa: 'a', razonSocial: 'Empresa C', nombreFantasia: 'Empresa A',  email: 'empresaC@email.com' },
-  ];
-    
+  listadoSucursal: any;
+
   dtOptions: DataTables.Settings = {};
   dtTrigger: Subject<any> = new Subject();
  
@@ -41,28 +38,24 @@ export default class ListaSucursalComponent implements OnInit, AfterViewInit, On
   ngOnInit(): void {
     this.dtOptions = {
       destroy: true, 
-      order: [],
+      order: [0, 'asc'],
       columnDefs: [
-        {targets: 4, orderable: false},
+        {targets: 7, orderable: false},
       ],
       responsive:true
     };
-    this.getListaEmpresas();
-    this.loading = false;
   }
 
-  ngAfterViewInit() {
-     
-    
- 
+  ngAfterViewInit() { 
+    this.getListaEmpresas(); 
   }
 
   getListaEmpresas() {
     this.loading = true;
  
-    this.empresaService.getListaEmpresas().subscribe({
+    this.sucursalService.getListaSucursales().subscribe({
       next: (data) => {  
-       this.listadoEmpresas = data; 
+       this.listadoSucursal = data; 
       },
       error: (e) => {
         this.loading = false; 
@@ -76,49 +69,58 @@ export default class ListaSucursalComponent implements OnInit, AfterViewInit, On
     });
   }
 
-  editar(company?: Empresa) { 
-    console.log(company);
-    const modalRef = this.modalService.open(EdicionEmpresaComponent, {
-      size: 'lg',
+  async editar(sucursal?: Sucursal) { 
+    const modalRef = this.modalService.open(EdicionSucursalComponent, {
+      size: 'xl',
     });
-    modalRef.componentInstance.company = company;
-  }
+    modalRef.componentInstance.sucursal = sucursal;
 
-  async eliminar(id: number) {
-    const modalRef = this.modalService.open(ConfirmationModalComponent);
-    modalRef.componentInstance.title = 'Confirmar eliminación';
-    modalRef.componentInstance.message =
-      '¿Estás seguro de eliminar esta empresa?';
+    const result = await modalRef.result.catch(() => false);
+    if (result) { 
+      this.actualizarTabla(); 
+    }
+  }
+  
+ 
+
+  async eliminar(id: string) {
+    const modalRef = this.modalTypeService.openConfirmModal('Confirmar eliminación','¿Estás seguro de eliminar esta sucursal?')
+  
 
     const result = await modalRef.result.catch(() => false);
     if (result) {
-      this.empresaService.deleteCompany(id).subscribe({
+      this.sucursalService.deleteSucursal(id).subscribe({
         next: () => {
           this.actualizarTabla(); 
-          this.toastService.showSuccess('Empresa eliminada correctamente');
+          this.toastService.showSuccess('Sucursal eliminada correctamente');
         },
-        error: () => this.toastService.showError('Error al eliminar empresa'),
+        error: (e) => this.toastService.showError('Error al eliminar sucursal : ' + e.error.mensaje	),
       });
     }
   } 
-  actualizarTabla(){
-    this.listadoEmpresas = [
-      { rutEmpresa: 1, dvRutEmpresa: 'a', razonSocial: 'Empresa A', nombreFantasia: 'Empresa A', email: 'empresaA@email.com' },
-      { rutEmpresa: 2, dvRutEmpresa: 'a', razonSocial: 'Empresa B', nombreFantasia: 'Empresa A', email: 'empresaB@email.com' }, 
-    ];
+
+
+
+  actualizarTabla(){ 
+    
+    this.sucursalService.getListaSucursales().subscribe({
+      next: (data) => {  
+       this.listadoSucursal = data; 
+      },
+      complete: () => { 
+        this.rerender();
+      }
+    });
   
-    this.rerender();
     
   }
   
   rerender(): void {
     
-    this.dtElement.dtInstance.then(dtInstance => {
-      // Destroy the table first
-      dtInstance.destroy();
-      // Call the dtTrigger to rerender again 
-     
-      setTimeout(() => {
+    this.dtElement.dtInstance.then(dtInstance => { 
+      dtInstance.destroy();  
+      this.loading = false;
+      setTimeout(() => { 
        this.dtTrigger.next(this.dtOptions); 
      }, 12);
     })
@@ -126,7 +128,6 @@ export default class ListaSucursalComponent implements OnInit, AfterViewInit, On
   }
    
   ngOnDestroy(): void {
-    // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
   }
 

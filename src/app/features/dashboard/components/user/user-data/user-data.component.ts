@@ -2,6 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader'; 
 import { AuthService } from 'src/app/core/services/auth.service';
+import { EmpresaService } from 'src/app/core/data-access/configuracion/empresa.service';
+import { ModalTypeService } from 'src/app/core/services/modal-type.service'
 
 @Component({
   selector: 'app-user-data',
@@ -12,12 +14,15 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class UserDataComponent implements OnInit {
   
-  public authService = inject(AuthService);
+  authService = inject(AuthService);
+  empresaService = inject(EmpresaService);
+  modalTypeService = inject(ModalTypeService);
 
   public fichaPersonal = {};
-  public datosPantalla = {};
+  datosEmpresa: any;
   loadingFicha = true;
   mensajeError: any; 
+  fotoUsuario: any = 'assets/fotos/'+this.authService.getUsuarioState.idUsuario+'.png';
 
   datosFoto = {};
   mostrarFoto: boolean = true;
@@ -32,13 +37,27 @@ export class UserDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getEmpresa();
    // this.getFichaPersonal();
-   // this.getDatosPantalla();
    // this.getFotoTrabajador();
    setTimeout(() => {
     this.loadingFicha=false;
   }, 500);
    
+  }
+
+  getEmpresa() {
+    
+    this.empresaService.getEmpresa(this.authService.getUsuarioState.rutEmpresa).subscribe({
+      next: (data) => {  
+        this.datosEmpresa = data[0];
+      },
+      error: (e) => {
+        console.log('error', e);
+        this.mensajeError = e.statusText;
+        this.modalTypeService.openWarningModalMessage('Error', this.mensajeError);
+      }
+    });
   }
 
   /*getFichaPersonal() {
@@ -57,17 +76,6 @@ export class UserDataComponent implements OnInit {
         });
   }
 
-  getDatosPantalla() {
-    this._fichaPersonal.obtenerDatosPantalla('trabajo')
-      .subscribe((data: any) => {
-          this.datosPantalla = data;
-        },
-        error => {
-          console.log('error', error);
-          this.mensajeError = error.statusText;
-          this._modalTypeService.openWarningModalMessage(this.mensajeError);
-        });
-  }
 
 
   getFotoTrabajador() {

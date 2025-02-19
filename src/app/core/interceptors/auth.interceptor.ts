@@ -9,10 +9,13 @@ import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { catchError, tap, throwError } from 'rxjs';
+import { ModalTypeService } from 'src/app/core/services/modal-type.service'
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const modalTypeService = inject(ModalTypeService);
+  var mensajeError:any;
   
   // Clonar request con token y cabeceras
   const authReq = addHeadersToRequest(req, getToken('accessToken'));
@@ -32,6 +35,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           req = agregarCsrfToken(req);
           return next(req);
         default: 
+            mensajeError = error.statusText;
+           // modalTypeService.openErrorModalMessage('Error', 'El servidor se encuentra ocupado, por favor reintente la acción');
           break;
       }
       return throwError(() => error);

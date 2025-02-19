@@ -2,7 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SidebarService } from 'src/app/core/services/sidebar.service';
-
+ 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -22,7 +22,6 @@ export class SidebarComponent {
 
   constructor() {
     this.loadMenuItems();
-    //this.initializeSubmenuStates(this.menuItems);
   }
 
   toggleCollapse() {
@@ -31,6 +30,7 @@ export class SidebarComponent {
       isCollapsed: !state.isCollapsed,
     }));
   }
+
   toggleMobileMenu() {
     this.sidebar.menuState.update((state) => ({
       ...state,
@@ -41,6 +41,7 @@ export class SidebarComponent {
   loadMenuItems() {
     this.sidebar.listaMenu().subscribe((response) => {
       this.menuItems = response;
+      this.initializeSubmenuStates(this.menuItems);
     });
   }
 
@@ -51,20 +52,28 @@ export class SidebarComponent {
     if (this.isCollapsed()){
       this.toggleCollapse();
     }
+    localStorage.setItem('submenuStates', JSON.stringify(this.submenuStates));
   }
 
   isSubmenuOpen(submenuKey: string): boolean {
     return this.submenuStates[submenuKey];
   }
+ 
+  private initializeSubmenuStates(items: any) { 
+    const submenuStates = localStorage.getItem('submenuStates');
+    const storedStates: Record<string, boolean> = submenuStates ? JSON.parse(submenuStates) : {}; 
+    const processItems = (items: any) => {
+        items.forEach((item: { hijos: any; id: string | number }) => {
+            if (item.hijos) {
+                this.submenuStates[item.id] = storedStates[item.id.toString()] ?? false; 
+                processItems(item.hijos);
+            }
+        });
+    };
 
-  // Inicializa todos los submenús como cerrados
-  private initializeSubmenuStates(items: any) {
-    items.forEach((item: { children: any; id: string | number }) => {
-      if (item.children) {
-        this.submenuStates[item.id] = false;
-        this.initializeSubmenuStates(item.children);
-      }
-    });
-  }
+    processItems(items);
+
+    localStorage.setItem('submenuStates', JSON.stringify(this.submenuStates));
+}
 }
 

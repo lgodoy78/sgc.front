@@ -1,84 +1,75 @@
-import { Component, inject, AfterViewInit, TemplateRef, ViewChild, HostListener, ElementRef } from '@angular/core';
+import { Component, inject, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EmpresaService } from 'src/app/core/data-access/configuracion/empresa.service';
 import { Empresa } from 'src/app/core/model/empresa.model';
 import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastService } from 'src/app/core/services/toast.service'; 
-import { EdicionEmpresaComponent } from '../edicion-empresa/edicion-empresa.component';
-import { ConfirmationModalComponent } from 'src/app/features/shared/confirmation-modal.component'
-import { DatatableComponent, NgxDatatableModule, ColumnMode  } from '@swimlane/ngx-datatable'; 
+import { ToastService } from 'src/app/core/services/toast.service';  
+import { EdicionEmpresaComponent } from 'src/app/features/pages/configuracion/empresa/edicion-empresa/edicion-empresa.component' 
+import { DataTableDirective, DataTablesModule } from 'angular-datatables';
+import { ModalTypeService } from 'src/app/core/services/modal-type.service'
+import { Subject } from 'rxjs'; 
 
 @Component({
   selector: 'app-lista-empresas',
   standalone: true,
-  imports: [NgbModule, CommonModule, NgxDatatableModule],
+  imports: [NgbModule, CommonModule, DataTablesModule],
   templateUrl: './lista-empresas.component.html',
-  styleUrl: './lista-empresas.component.scss',
+  styleUrl: './lista-empresas.component.scss'
 })
-export default class ListaEmpresasComponent implements AfterViewInit {
+export default class ListaEmpresasComponent implements OnInit, AfterViewInit, OnDestroy {
   empresaService = inject(EmpresaService);
   modalService = inject(NgbModal);
   toastService = inject(ToastService);
-    
-  @ViewChild(DatatableComponent, { static: false }) table!: DatatableComponent; 
-  @ViewChild('actionTemplate', { static: false }) actionTemplate!: TemplateRef<any>;
+  modalTypeService = inject(ModalTypeService);
+ 
+  @ViewChild(DataTableDirective, {static: false})
+  dtElement!: DataTableDirective;
+
   companies: Empresa[] = [];
-  loading = true;
+  loading = true; 
   listadoEmpresas: any;
-  ColumnMode = ColumnMode;
 
-
-  rows: Empresa[] = [];
-  temp: Empresa[] = [];   
-  
-  columns: any[] = []; 
+  dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<any> = new Subject();
+ 
  
   message = '';
 
-  ngAfterViewInit() { 
-   this.getListaEmpresas();
+  ngOnInit(): void {
+    this.dtOptions = {
+      destroy: true, 
+      order: [0, 'asc'],
+      columnDefs: [
+        {targets: 5, orderable: false},
+      ],
+      responsive:true
+    };
+  }
 
-   setTimeout(() => {
-    if (this.table) {
-      this.table.recalculate(); // Ajusta la tabla al iniciar
-    }
-  }, 500);
- 
+  ngAfterViewInit() { 
+    this.getListaEmpresas(); 
   }
 
   getListaEmpresas() {
     this.loading = true;
  
     this.empresaService.getListaEmpresas().subscribe({
-      next: (data) => {
-        this.temp = [...data]
-        this.rows = data; 
-
-        this.columns = [
-          { name: 'RUT Empresa', prop: 'rutEmpresa', sortable: true, width:'10%'  },
-          { name: 'DV', prop: 'dvRutEmpresa', sortable: true },
-          { name: 'Razón Social', prop: 'razonSocial', sortable: true   },
-          { name: 'Nombre Fantasía', prop: 'nombreFantasia', sortable: true   },
-          { name: 'E-Mail', prop: 'email', sortable: true },
-          { 
-            name: 'Acción', 
-            prop: 'actions', 
-            sortable: false,     
-            cellTemplate: this.actionTemplate
-          }
-        ]; 
+      next: (data) => {  
+       this.listadoEmpresas = data; 
       },
       error: (e) => {
         this.loading = false; 
       },
       complete: () => {
         this.loading = false;
+        setTimeout(() => {
+          this.dtTrigger.next(this.dtOptions);
+         }, 1);
       }
     });
   }
 
-  editar(company?: Empresa) {
-    this.getListaEmpresas(); 
+  editar(company?: Empresa) { 
     console.log(company);
     const modalRef = this.modalService.open(EdicionEmpresaComponent, {
       size: 'lg',
@@ -87,49 +78,48 @@ export default class ListaEmpresasComponent implements AfterViewInit {
   }
 
   async eliminar(id: number) {
-    const modalRef = this.modalService.open(ConfirmationModalComponent);
-    modalRef.componentInstance.title = 'Confirmar eliminación';
-    modalRef.componentInstance.message =
-      '¿Estás seguro de eliminar esta empresa?';
+    const modalRef = this.modalTypeService.openConfirmModal('Confirmar eliminación','¿Estás seguro de eliminar esta empresa?')
+  
 
     const result = await modalRef.result.catch(() => false);
     if (result) {
       this.empresaService.deleteCompany(id).subscribe({
         next: () => {
-          this.getListaEmpresas(); 
+          this.actualizarTabla(); 
           this.toastService.showSuccess('Empresa eliminada correctamente');
         },
         error: () => this.toastService.showError('Error al eliminar empresa'),
       });
     }
-  }
+  } 
 
-  onSearchChange(event: any) {
-    const val = event.target.value.toLowerCase();
-  
-    this.rows = this.temp.filter((d) => {
-      return (Object.keys(d) as (keyof Empresa)[]).some((key) => {
-        // Excluir la columna "actions"
-        if (key !== "actions") {
-          return String(d[key] ?? "").toLowerCase().includes(val);
-        }
-        return false;
-      });
-    });
-  
-    // Volver a la primera página después de la búsqueda
-    this.table.offset = 0;
-  }
 
-  @HostListener('window:resize', ['$event'])
-  onResize() {
-    if (this.table) { 
-      setTimeout(() => {
-        console.log('hila')
-        this.table.recalculate();
-        this.table.recalculateColumns();
-      }, 300);
+  actualizarTabla(){
+    this.loading = true; 
+    this.listadoEmpresas = [
+      { rutEmpresa: 1, dvRutEmpresa: 'a', razonSocial: 'Empresa A', nombreFantasia: 'Empresa A', email: 'empresaA@email.com' },
+      { rutEmpresa: 2, dvRutEmpresa: 'a', razonSocial: 'Empresa B', nombreFantasia: 'Empresa A', email: 'empresaB@email.com' }, 
+    ];
+  
+    this.rerender();
     
-  }}
- 
+  }
+  
+  rerender(): void {
+    
+    this.dtElement.dtInstance.then(dtInstance => { 
+      dtInstance.destroy();  
+      this.loading = false;
+      setTimeout(() => { 
+       this.dtTrigger.next(this.dtOptions); 
+     }, 12);
+    })
+
+  }
+   
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
+  }
+
+   
 }
