@@ -44,6 +44,8 @@
       width: auto;
       margin-left: 1rem;
       box-shadow: 2px 2px 5px var(--sidebar-shadow);
+      background-color: var(--bs-app-header-base-bg-color);
+      text-wrap:nowrap;
     }
   }
 }
