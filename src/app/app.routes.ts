@@ -41,13 +41,23 @@ export const routes: Routes = [
       },
       {
         path: 'configuracion/empresa',
-        loadComponent: () => import('./features/pages/configuracion/empresa/lista-empresas/lista-empresas.component'),
+        loadComponent: () => import('./features/pages/configuracion/organizacion/empresa/lista-empresas/lista-empresas.component'),
         data: { breadcrumb: 'Configuración / Estructura Organizativa' },
       },
       {
         path: 'configuracion/sucursal',
-        loadComponent: () => import('./features/pages/configuracion/sucursal/lista-sucursal/lista-sucursal.component'),
+        loadComponent: () => import('./features/pages/configuracion/organizacion/sucursal/lista-sucursal/lista-sucursal.component'),
         data: { breadcrumb: 'Configuración / Estructura Organizativa' },
+      },
+      {
+        path: 'configuracion/macro-procesos',
+        loadComponent: () => import('./features/pages/configuracion/procesos/macro-procesos/lista-macro-procesos/lista-macro-procesos.component'),
+        data: { breadcrumb: 'Configuración / Procesos' },
+      },
+      {
+        path: 'configuracion/procesos',
+        loadComponent: () => import('./features/pages/configuracion/procesos/procesos/lista-procesos/lista-procesos.component'),
+        data: { breadcrumb: 'Configuración / Procesos' },
       }
       /*{
         path: 'admin',

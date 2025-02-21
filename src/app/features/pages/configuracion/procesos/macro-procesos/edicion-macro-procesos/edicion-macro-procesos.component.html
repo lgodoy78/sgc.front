@@ -1,0 +1,70 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ isEdit ? 'Editar' : 'Nuevo' }} Macro Proceso</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="closeModal()"
+  ></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+           <div class="col-md-3 mb-3">
+        <label for="codMacroProceso" class="form-label">Código</label>
+        <input
+          #macroProcesoInput
+          type="text"
+          class="form-control"
+          id="codMacroProceso"
+          formControlName="codMacroProceso"
+          maxlength="5"
+          (change)="revisaExiste($event)" 
+          [class.is-invalid]="
+            form.get('codMacroProceso')?.invalid &&
+            form.get('codMacroProceso')?.touched
+          "
+        />
+        <div class="invalid-feedback">
+          El código es requerido
+        </div>
+      </div>
+
+      <div class="col-md-9 mb-3">
+        <label for="macroProcesos" class="form-label">Macro Proceso</label>
+        <input
+          type="text"
+          class="form-control"
+          id="macroProcesos"
+          formControlName="macroProcesos"
+          maxlength="100"
+          [class.is-invalid]="
+            form.get('macroProcesos')?.invalid && form.get('macroProcesos')?.touched
+          "
+        />
+        <div class="invalid-feedback">
+          El nombre del macro proceso es requerido
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="closeModal()">
+    Cancelar
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="onSubmit()"
+    [disabled]="form.invalid || loading"
+  >
+    <span
+      *ngIf="loading"
+      class="spinner-border spinner-border-sm me-1"
+      role="status"
+      aria-hidden="true"
+    ></span>
+    {{ isEdit ? 'Actualizar' : 'Guardar' }}
+  </button>
+</div>

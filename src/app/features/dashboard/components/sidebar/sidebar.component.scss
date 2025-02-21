@@ -13,6 +13,21 @@
     height: 70px;
   }
 
+  .menu-text { 
+    color:#31669d;
+  } 
+
+  .menu-icon { 
+    color:#31669d;
+  }
+  
+  .menu-text:hover{ 
+    color:var(--bs-link-hover-color)
+  }
+  .menu-icon:hover{ 
+    color:var(--bs-link-hover-color)
+  }
+
   &.collapsed {
     width: var(--sidebar-collapsed-width);
 
@@ -26,7 +41,7 @@
       opacity: 0;
       width: 0;
       margin-left: 0;
-      float: right;
+      float: right; 
     }
 
     .btn-toggle {

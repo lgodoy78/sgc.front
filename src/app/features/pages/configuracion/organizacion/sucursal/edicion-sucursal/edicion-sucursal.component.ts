@@ -13,7 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './edicion-sucursal.component.html',
-  styleUrl: './edicion-sucursal.component.scss',
+  styles: []
 })
 export class EdicionSucursalComponent implements AfterViewInit {
   @Input() sucursal?: Sucursal;
@@ -73,7 +73,6 @@ export class EdicionSucursalComponent implements AfterViewInit {
     if(codSucursal.length > 0){
       this.sucursalService.getSucursal(codSucursal).subscribe({
         next: (data) => {
-          console.log(data)
           if (data.codSucursal != 0){
             this.toastService.showError('El código de sucursal ya existe');
             this.form.controls.codSucursal.setValue('');

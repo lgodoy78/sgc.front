@@ -4,7 +4,7 @@ import { SucursalService } from 'src/app/core/data-access/configuracion/sucursal
 import { Sucursal } from 'src/app/core/model/sucursal.model';
 import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/app/core/services/toast.service';  
-import { EdicionSucursalComponent } from 'src/app/features/pages/configuracion/sucursal/edicion-sucursal/edicion-sucursal.component' 
+import { EdicionSucursalComponent } from 'src/app/features/pages/configuracion/organizacion/sucursal/edicion-sucursal/edicion-sucursal.component' 
 import { ModalTypeService } from 'src/app/core/services/modal-type.service'
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
 import { Subject } from 'rxjs'; 
@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
   standalone: true,
   imports: [NgbModule, CommonModule, DataTablesModule],
   templateUrl: './lista-sucursal.component.html',
-  styleUrl: './lista-sucursal.component.scss'
+  styles: []
 })
 export default class ListaSucursalComponent implements OnInit, AfterViewInit, OnDestroy {
   sucursalService = inject(SucursalService);

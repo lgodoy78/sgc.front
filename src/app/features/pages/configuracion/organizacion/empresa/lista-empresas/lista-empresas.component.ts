@@ -4,7 +4,7 @@ import { EmpresaService } from 'src/app/core/data-access/configuracion/empresa.s
 import { Empresa } from 'src/app/core/model/empresa.model';
 import { NgbModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from 'src/app/core/services/toast.service';  
-import { EdicionEmpresaComponent } from 'src/app/features/pages/configuracion/empresa/edicion-empresa/edicion-empresa.component' 
+import { EdicionEmpresaComponent } from 'src/app/features/pages/configuracion/organizacion/empresa/edicion-empresa/edicion-empresa.component' 
 import { DataTableDirective, DataTablesModule } from 'angular-datatables';
 import { ModalTypeService } from 'src/app/core/services/modal-type.service'
 import { Subject } from 'rxjs'; 

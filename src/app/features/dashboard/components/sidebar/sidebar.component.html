@@ -43,8 +43,8 @@
           <!-- Estructura Organizativa -->
           <li class="dropdown">
             <a routerLink="inicio">
-              <i class="fad fa-home me-3" style="font-size: 1.3rem;width: 20px;"></i>
-              <span *ngIf="!isCollapsed()">Inicio</span>
+              <i class="fad fa-home me-3 menu-icon" style="font-size: 1.3rem;width: 20px;"></i>
+              <span class="menu-text" *ngIf="!isCollapsed()">Inicio</span>
             </a>
           </li>
         </ul>
@@ -67,7 +67,7 @@
                 (click)="child.hijos ? toggleTree(child.id, $event) : null"
                 [class.has-hijos]="child.hijos" class="nav-link-side"
               >
-                <i [class]="child.icono" class="me-3" style="font-size: 1.3rem;width: 20px;"></i>
+                <i [class]="child.icono" class="menu-icon me-3" style="font-size: 1.3rem;width: 20px;"></i>
                 <span class="menu-text" >{{ child.descripcion }}</span>
                 <i
                   *ngIf="child.hijos && !isCollapsed()"
