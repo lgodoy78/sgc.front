@@ -39,7 +39,7 @@ export default class ListaMacroProcesosComponent implements OnInit, AfterViewIni
       destroy: true, 
       order: [0, 'asc'],
       columnDefs: [
-        {targets: 2, orderable: false},
+        {targets: 2, width: '150px', orderable: false},
       ],
       responsive: true
     };

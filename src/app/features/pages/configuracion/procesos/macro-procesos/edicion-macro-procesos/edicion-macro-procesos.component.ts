@@ -50,7 +50,6 @@ export class EdicionMacroProcesosComponent {
     if(codMacroProceso.length > 0){
       this.macroProcesosService.getMacroProceso(codMacroProceso).subscribe({
         next: (data) => {
-          console.log(data.codMacroProceso)
           if (data.codMacroProceso != null){
             this.toastService.showError('El código de macro proceso ya existe');
             this.form.controls['codMacroProceso'].setValue('');

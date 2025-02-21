@@ -132,6 +132,8 @@ export class AuthService {
     this.accessToken.set(null);
     this.isAuthenticated.set(false);
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('submenuStates');
+    localStorage.removeItem('usuarioState');
     this.router.navigate(['/login']);
   }
 

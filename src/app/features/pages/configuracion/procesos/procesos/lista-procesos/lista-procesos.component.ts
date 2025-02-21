@@ -39,7 +39,8 @@ export default class ListaProcesosComponent implements OnInit, AfterViewInit, On
       destroy: true, 
       order: [0, 'asc'],
       columnDefs: [
-        {targets: 4, orderable: false},
+        {targets: 1, width: '200px'},
+        {targets: 3, width: '150px',  orderable: false},
       ],
       responsive: true
     };
@@ -100,17 +101,18 @@ export default class ListaProcesosComponent implements OnInit, AfterViewInit, On
     })
   }
 
-  async eliminar(id: string) {
+  async eliminar(proceso: procesos) {
     const modalRef = this.modalTypeService.openConfirmModal('Confirmar eliminación','¿Estás seguro de eliminar este proceso?');
 
     const result = await modalRef.result.catch(() => false);
     if (result) {
+      var id = `${proceso.codMacroProceso}-${proceso.codProceso}`;
       this.procesosService.deleteProceso(id).subscribe({
         next: () => {
           this.actualizarTabla(); 
           this.toastService.showSuccess('Proceso eliminado correctamente');
         },
-        error: (e) => this.toastService.showError('Error al eliminar proceso: ' + e.error.mensaje),
+        error: (e) => this.toastService.showError('Error al eliminar proceso: ' + e.error.mensaje + e.error.detalle),
       });
     }
   }

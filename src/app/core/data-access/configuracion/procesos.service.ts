@@ -13,22 +13,22 @@ export class ProcesosService {
   logicApiUrl = this.utilities.logicApiUrl();
 
   getListaProcesos(): Observable<any> {
-    return this.http.get(`${this.logicApiUrl}/api/procesos/listar`);
+    return this.http.get(`${this.logicApiUrl}/api/proceso/listar`);
   }
 
   getProceso(codProceso: string): Observable<any> {
-    return this.http.get(`${this.logicApiUrl}/api/procesos/obtener/${codProceso}`);
+    return this.http.get(`${this.logicApiUrl}/api/proceso/obtener/${codProceso}`);
   }
 
   createProceso(proceso: procesos): Observable<any> {
-    return this.http.post(`${this.logicApiUrl}/api/procesos/crear`, proceso);
+    return this.http.post(`${this.logicApiUrl}/api/proceso/crear`, proceso);
   }
 
   updateProceso(proceso: procesos): Observable<any> {
-    return this.http.put(`${this.logicApiUrl}/api/procesos/actualizar`, proceso);
+    return this.http.put(`${this.logicApiUrl}/api/proceso/actualizar`, proceso);
   }
 
   deleteProceso(codProceso: string): Observable<any> {
-    return this.http.delete(`${this.logicApiUrl}/api/procesos/eliminar/${codProceso}`);
+    return this.http.delete(`${this.logicApiUrl}/api/proceso/eliminar/${codProceso}`);
   }
 }

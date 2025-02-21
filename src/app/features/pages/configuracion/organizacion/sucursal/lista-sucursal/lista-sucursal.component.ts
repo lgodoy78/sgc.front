@@ -40,7 +40,7 @@ export default class ListaSucursalComponent implements OnInit, AfterViewInit, On
       destroy: true, 
       order: [0, 'asc'],
       columnDefs: [
-        {targets: 7, orderable: false},
+        {targets: 7, width: '100px', orderable: false},
       ],
       responsive:true
     };

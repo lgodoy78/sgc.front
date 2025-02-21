@@ -49,6 +49,7 @@ export class EdicionProcesosComponent {
         procesos: this.proceso['procesos']
       };
       this.form.patchValue(formData);
+      this.form.controls['codMacroProceso'].disable();
       this.form.controls['codProceso'].disable();
     }
   }
@@ -64,12 +65,13 @@ export class EdicionProcesosComponent {
     });
   }
 
-  revisaExiste(event: any){
-    const codProceso = event.target.value;
+  revisaExiste(){
+    const codMacroProceso = this.form.value['codMacroProceso'];
+    const codProceso = this.form.value['codProceso'];
     if(codProceso.length > 0){
-      this.procesosService.getProceso(codProceso).subscribe({
-        next: (data) => {
-          console.log(data.codProceso)
+      const idProceso =  `${codMacroProceso}-${codProceso}`;
+      this.procesosService.getProceso(idProceso).subscribe({
+        next: (data) => { 
           if (data.codProceso != null){
             this.toastService.showError('El código de proceso ya existe');
             this.form.controls['codProceso'].setValue('');
@@ -101,7 +103,7 @@ export class EdicionProcesosComponent {
           },
           error: (e) => {
             this.loading = false;
-            this.toastService.showError('Error al actualizar proceso: ' + e.error.mensaje);
+            this.toastService.showError('Error al actualizar proceso: ' + e.error.mensaje + e.error.detalle);
           }
         });
       } else {
@@ -112,7 +114,7 @@ export class EdicionProcesosComponent {
           },
           error: (e) => {
             this.loading = false;
-            this.toastService.showError('Error al crear proceso: ' + e.error.mensaje);
+            this.toastService.showError('Error al crear proceso: ' + e.error.mensaje + e.error.detalle);
           }
         });
       }

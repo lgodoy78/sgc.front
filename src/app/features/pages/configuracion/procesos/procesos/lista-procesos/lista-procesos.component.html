@@ -26,14 +26,13 @@
         >
           <thead class="table-dark">
             <tr>
-              <th scope="col">CÓDIGO MACRO PROCESO</th>
+              <th scope="col">MACRO PROCESO</th>
               <th scope="col">CÓDIGO PROCESO</th>
               <th scope="col">PROCESO</th>
               <th
                 scope="col"
                 data-priority="1"
-                class="text-center"
-                style="width: 100px"
+                class="text-center" 
               >
                 ACCIÓN
               </th>
@@ -42,7 +41,7 @@
           <tbody>
             <tr *ngFor="let proceso of this.listadoProcesos; index as i">
               <td>
-                <span>{{ proceso.codMacroProceso }}</span>
+                <span>{{ proceso.macroProceso.macroProcesos }}</span>
               </td>
               <td>
                 <span>{{ proceso.codProceso }}</span>
@@ -59,7 +58,7 @@
                 </button>
                 <button
                   class="btn btn-sm btn-clean btn-icon"
-                  (click)="eliminar(proceso.codProceso)"
+                  (click)="eliminar(this.listadoProcesos[i])"
                 >
                   <i class="fad fa-trash text-danger"></i>
                 </button>

@@ -16,6 +16,7 @@
           class="form-select"
           id="codMacroProceso"
           formControlName="codMacroProceso"
+          (change)="revisaExiste()" 
           [class.is-invalid]="
             form.get('codMacroProceso')?.invalid && form.get('codMacroProceso')?.touched
           "
@@ -39,7 +40,7 @@
           id="codProceso"
           formControlName="codProceso"
           maxlength="5"
-          (change)="revisaExiste($event)" 
+          (change)="revisaExiste()" 
           [class.is-invalid]="
             form.get('codProceso')?.invalid && form.get('codProceso')?.touched
           "
