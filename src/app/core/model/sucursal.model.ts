@@ -6,8 +6,8 @@ export interface Sucursal {
     dirNumero: number | null; 
     dirPiso: number | null;
     dirOficina: number | null;
-    codComuna: string;
-    codRegion: string;
-    codPais: string;
+    codComuna: string | null;
+    codRegion: string | null;
+    codPais: string | null;
     actions:string;
   }

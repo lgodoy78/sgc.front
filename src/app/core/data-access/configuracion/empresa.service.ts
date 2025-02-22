@@ -1,13 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  catchError,
-  delay,
-  map,
-  Observable,
-  of,
-  throwError,
-} from 'rxjs';
+import { Observable } from 'rxjs';
 import { Empresa } from 'src/app/core/model/empresa.model';
 import { Utilities } from 'src/app/core/services/utilities';
 import { HttpClient } from '@angular/common/http';
@@ -16,43 +8,29 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class EmpresaService {
-  private empresas = new BehaviorSubject<Empresa[]>([]);
   private utilities = inject(Utilities);
   private http = inject(HttpClient);
-  logicApiUrl = this.utilities.logicApiUrl(); 
+  logicApiUrl = this.utilities.logicApiUrl();
 
   getListaEmpresas(): Observable<any> {
     return this.http.get(`${this.logicApiUrl}/api/empresa/listar`);
   }
 
-  getEmpresa(id: any): Observable<any> {
-    return this.http.post(`${this.logicApiUrl}/api/empresa/buscar`, {
-      rutEmpresa:id
-    });
+  getEmpresa(id: number): Observable<any> {
+    return this.http.get(`${this.logicApiUrl}/api/empresa/obtener/${id}`);
   }
 
-  createCompany(empresa: Empresa): Observable<Empresa> {
-    try {
-      const current = this.empresas.value;
-      empresa.rutEmpresa = current.length + 1;
-      this.empresas.next([...current, empresa]);
-      return of(empresa).pipe(delay(1000));
-    } catch (error) {
-      return throwError(() => new Error('Error al crear empresa'));
-    }
+  createEmpresa(empresa: Empresa): Observable<any> {
+    return this.http.post(`${this.logicApiUrl}/api/empresa/crear`, empresa);
   }
 
-  updateCompany(empresa: Empresa): Observable<boolean> {
-    const current = this.empresas.value;
-    const index = current.findIndex((c) => c.rutEmpresa === empresa.rutEmpresa);
-    current[index] = empresa;
-    this.empresas.next(current);
-    return of(true).pipe(delay(1000));
+  updateEmpresa(empresa: Empresa): Observable<any> {
+    return this.http.put(`${this.logicApiUrl}/api/empresa/actualizar`, empresa);
   }
 
-  deleteCompany(rutEmpresa: number): Observable<boolean> {
-    const filtered = this.empresas.value.filter((c) => c.rutEmpresa !== rutEmpresa);
-    this.empresas.next(filtered);
-    return of(true).pipe(delay(500));
+  deleteEmpresa(rutEmpresa: number): Observable<any> {
+    return this.http.delete(
+      `${this.logicApiUrl}/api/empresa/eliminar/${rutEmpresa}`
+    );
   }
 }

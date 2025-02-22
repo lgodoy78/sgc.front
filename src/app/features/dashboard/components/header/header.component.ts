@@ -5,6 +5,7 @@ import { SidebarService } from 'src/app/core/services/sidebar.service';
 import { ThemeService } from 'src/app/core/services/theme.service';
 import { UserComponent } from "../user/user.component";
 import { EmpresaService } from 'src/app/core/data-access/configuracion/empresa.service'; 
+import { FileUploadService } from 'src/app/core/data-access/configuracion/file-upload.service';
 import { BreadcrumbComponent } from 'xng-breadcrumb';
 
 @Component({
@@ -17,8 +18,9 @@ import { BreadcrumbComponent } from 'xng-breadcrumb';
 export class HeaderComponent { 
   sidebar = inject(SidebarService); 
   empresaService = inject(EmpresaService); 
+  fileUploadService = inject(FileUploadService); 
   nombreFantasia: any;
-  fotoEmpresa: any = 'assets/logos/'+this.authService.getUsuarioState.rutEmpresa+'.png';
+  fotoEmpresa: any = '';
   fotoUsuario: any = 'assets/fotos/'+this.authService.getUsuarioState.idUsuario+'.png';
 
   constructor(
@@ -27,6 +29,7 @@ export class HeaderComponent {
   ) {
 
     this.getEmpresa();
+    this.getLogo();
   }
 
   toggleTheme() {
@@ -49,7 +52,7 @@ export class HeaderComponent {
     
     this.empresaService.getEmpresa(this.authService.getUsuarioState.rutEmpresa).subscribe({
       next: (data) => {  
-        this.nombreFantasia = data[0].nombreFantasia;
+        this.nombreFantasia = data.nombreFantasia;
       },
       error: (e) => {
         console.log('error', e);
@@ -57,4 +60,9 @@ export class HeaderComponent {
     });
   }
   
+  getLogo(){
+    if (this.authService.getUsuarioState.rutEmpresa) {
+      this.fotoEmpresa = this.fileUploadService.getLogoUrl(this.authService.getUsuarioState.rutEmpresa);
+    } 
+  }
 }

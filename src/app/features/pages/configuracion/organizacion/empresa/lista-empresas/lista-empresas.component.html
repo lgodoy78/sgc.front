@@ -49,10 +49,10 @@
               <td>
                 <span>{{ empresa.dvRutEmpresa }}</span>
               </td>
-              <td>
+              <td class="text-success-emphasis">
                 <span>{{ empresa.razonSocial }}</span>
               </td>
-              <td>
+              <td class="text-success-emphasis">
                 <span>{{ empresa.nombreFantasia }}</span>
               </td>
               <td>
@@ -67,7 +67,7 @@
                 </button>
                 <button
                   class="btn btn-sm btn-clean btn-icon"
-                  (click)="eliminar(empresa)"
+                  (click)="eliminar(empresa.rutEmpresa)"
                 >
                   <i class="fad fa-trash text-danger"></i>
                 </button>

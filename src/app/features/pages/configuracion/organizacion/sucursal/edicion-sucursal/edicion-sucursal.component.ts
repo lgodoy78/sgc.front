@@ -35,9 +35,9 @@ export class EdicionSucursalComponent implements AfterViewInit {
     dirNumero: [null as number | null, [Validators.pattern('^[0-9]+$')]], 
     dirPiso: [null as number | null, [Validators.pattern('^[0-9]+$')]],   
     dirOficina: [null as number | null, [Validators.pattern('^[0-9]+$')]], 
-    codComuna: ['', Validators.required],
-    codRegion: ['', Validators.required],
-    codPais: ['', Validators.required],
+    codComuna: [''],
+    codRegion: [''],
+    codPais: [''],
   });
   
 
@@ -57,6 +57,11 @@ export class EdicionSucursalComponent implements AfterViewInit {
         this.getListaComunas(this.sucursal.codRegion);
       }
   
+
+      this.sucursal.codComuna = this.sucursal.codComuna === null ? '' : this.sucursal.codComuna;
+      this.sucursal.codRegion = this.sucursal.codRegion === null ? '' : this.sucursal.codRegion;
+      this.sucursal.codPais = this.sucursal.codPais === null ? '' : this.sucursal.codPais;
+      
       this.form.patchValue({
         ...this.sucursal, // Convertir a '' si está vacío
         dirNumero: this.sucursal.dirNumero ?? null, 
@@ -105,6 +110,7 @@ export class EdicionSucursalComponent implements AfterViewInit {
   }
 
   getListaRegiones(codPais: any) {
+    this.listaRegiones = [];
     this.listaComunas = [];
     this.comunaService.getListaRegiones(codPais).subscribe({
       next: (data) => {
@@ -129,6 +135,10 @@ export class EdicionSucursalComponent implements AfterViewInit {
 
     this.isSubmitting = true;
     const sucursalData = this.form.value as Sucursal;
+
+    sucursalData.codComuna = sucursalData.codComuna === '' ? null : sucursalData.codComuna;
+    sucursalData.codRegion = sucursalData.codRegion === '' ? null : sucursalData.codRegion;
+    sucursalData.codPais = sucursalData.codPais === '' ? null : sucursalData.codPais;
 
     const operation = this.sucursal
       ? this.sucursalService

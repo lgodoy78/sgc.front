@@ -68,13 +68,17 @@ export default class ListaEmpresasComponent implements OnInit, AfterViewInit, On
       }
     });
   }
-
-  editar(company?: Empresa) { 
-    console.log(company);
+  
+  async editar(empresa?: Empresa) { 
     const modalRef = this.modalService.open(EdicionEmpresaComponent, {
-      size: 'lg',
+      size: 'xl',
     });
-    modalRef.componentInstance.company = company;
+    modalRef.componentInstance.empresa = empresa;
+
+    const result = await modalRef.result.catch(() => false);
+    if (result) { 
+      this.actualizarTabla(); 
+    }
   }
 
   async eliminar(id: number) {
@@ -83,7 +87,7 @@ export default class ListaEmpresasComponent implements OnInit, AfterViewInit, On
 
     const result = await modalRef.result.catch(() => false);
     if (result) {
-      this.empresaService.deleteCompany(id).subscribe({
+      this.empresaService.deleteEmpresa(id).subscribe({
         next: () => {
           this.actualizarTabla(); 
           this.toastService.showSuccess('Empresa eliminada correctamente');
@@ -93,15 +97,19 @@ export default class ListaEmpresasComponent implements OnInit, AfterViewInit, On
     }
   } 
 
-
-  actualizarTabla(){
-    this.loading = true; 
-    this.listadoEmpresas = [
-      { rutEmpresa: 1, dvRutEmpresa: 'a', razonSocial: 'Empresa A', nombreFantasia: 'Empresa A', email: 'empresaA@email.com' },
-      { rutEmpresa: 2, dvRutEmpresa: 'a', razonSocial: 'Empresa B', nombreFantasia: 'Empresa A', email: 'empresaB@email.com' }, 
-    ];
+ 
   
-    this.rerender();
+  actualizarTabla(){ 
+    
+    this.empresaService.getListaEmpresas().subscribe({
+      next: (data) => {  
+       this.listadoEmpresas = data; 
+      },
+      complete: () => { 
+        this.rerender();
+      }
+    });
+  
     
   }
   

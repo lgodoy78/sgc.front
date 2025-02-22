@@ -1,78 +1,362 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="modal-header">
-      <h5 class="modal-title">
-        {{ company ? 'Editar Empresa' : 'Nueva Empresa' }}
-      </h5>
-      <button type="button" class="btn-close" (click)="activeModal.dismiss()"></button>
-    </div>
-  
-    <div class="modal-body">
-      <div class="row g-3">
-        <div class="col-12">
-          <label class="form-label">Nombre</label>
-          <input type="text" class="form-control" formControlName="name">
-          <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="text-danger mt-1">
-            Nombre es requerido
-          </div>
-        </div>
-  
-        <div class="col-md-6">
-          <label class="form-label">Dirección</label>
-          <input type="text" class="form-control" formControlName="address">
-          <div *ngIf="form.get('address')?.invalid && form.get('address')?.touched" class="text-danger mt-1">
-            Dirección es requerida
-          </div>
-        </div>
-  
-        <div class="col-md-6">
-          <label class="form-label">Teléfono</label>
-          <input type="tel" class="form-control" formControlName="phone">
-          <div *ngIf="form.get('phone')?.invalid && form.get('phone')?.touched" class="text-danger mt-1">
-            Teléfono es requerido
-          </div>
-        </div>
-  
-        <div class="col-md-6">
-          <label class="form-label">Email</label>
-          <input type="email" class="form-control" formControlName="email">
-          <div *ngIf="form.get('email')?.errors?.['required'] && form.get('email')?.touched" class="text-danger mt-1">
-            Email es requerido
-          </div>
-          <div *ngIf="form.get('email')?.errors?.['email']" class="text-danger mt-1">
-            Email inválido
-          </div>
-        </div>
-  
-        <div class="col-md-6">
-          <label class="form-label">Sitio Web</label>
-          <input type="url" class="form-control" formControlName="website">
-          <div *ngIf="form.get('website')?.errors?.['pattern']" class="text-danger mt-1">
-            URL inválida
-          </div>
-        </div>
-  
-        <div class="col-md-6">
-          <label class="form-label">Identificación Tributaria</label>
-          <input type="text" class="form-control" formControlName="taxId">
-          <div *ngIf="form.get('taxId')?.invalid && form.get('taxId')?.touched" class="text-danger mt-1">
-            Identificación Tributaria es requerida
-          </div>
-        </div>
-  
-        <div class="col-12">
-          <label class="form-label">Descripción</label>
-          <textarea class="form-control" rows="3" formControlName="description"></textarea>
+<div class="modal-header">
+  <h4 class="modal-title">{{ isEdit ? 'Editar' : 'Nueva' }} Empresa</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="closeModal()"
+  ></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <!-- RUT y DV -->
+      <div class="col-md-3 mb-3">
+        <label for="rutEmpresa" class="form-label">RUT</label>
+        <input
+          #rutInput
+          type="number"
+          class="form-control"
+          id="rutEmpresa"
+          formControlName="rutEmpresa"
+          (change)="revisaExiste($event)"
+          [class.is-invalid]="form.get('rutEmpresa')?.invalid && form.get('rutEmpresa')?.touched"
+        />
+        <div class="invalid-feedback">
+          El RUT es requerido
         </div>
       </div>
-    </div>
-  
-    <div class="modal-footer">
-      <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss()">
-        Cancelar
-      </button>
-      <button type="submit" class="btn btn-primary" [disabled]="isSubmitting || form.invalid">
-        <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-1"></span>
-        {{ company ? 'Guardar Cambios' : 'Crear Empresa' }}
-      </button>
+      <div class="col-md-2 mb-3">
+        <label for="dvRutEmpresa" class="form-label">DV</label>
+        <input
+          type="text"
+          class="form-control"
+          id="dvRutEmpresa"
+          formControlName="dvRutEmpresa"
+          maxlength="1"
+          [class.is-invalid]="form.get('dvRutEmpresa')?.invalid && form.get('dvRutEmpresa')?.touched"
+        />
+        <div class="invalid-feedback">
+          El DV es requerido
+        </div>
+      </div>
+      <!-- Logo -->
+      <div class="col-md-7 mb-3">
+        <label class="form-label">Logo de la Empresa</label>
+        <div class="d-flex align-items-start gap-3">
+          <div *ngIf="logoPreview" class="position-relative" style="width: 50px;">
+            <img [src]="logoPreview" class="img-thumbnail" style="max-width: 50px; max-height: 50px; object-fit: contain;" alt="Logo">
+            <button type="button" class="btn-close position-absolute top-0 end-0" style="margin: -5px -10px 0 0;" (click)="clearLogo()">
+            </button>
+          </div>
+          <div class="flex-grow-1">
+            <input
+              #fileInput
+              type="file"
+              class="form-control"
+              accept="image/*"
+              (change)="onFileSelected($event)"
+            />
+            <small class="text-muted d-block mt-1 font-size-s">
+              Formato permitido: PNG. Tamaño máximo: 2MB
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Razón Social y Nombre Fantasía --> 
+      <div class="col-md-5 mb-3">
+        <label for="nombreFantasia" class="form-label">Nombre Fantasía</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombreFantasia"
+          formControlName="nombreFantasia"
+          maxlength="80"
+          [class.is-invalid]="form.get('nombreFantasia')?.invalid && form.get('nombreFantasia')?.touched"
+        />
+        <div class="invalid-feedback">
+          El nombre fantasía es requerido
+        </div>
+      </div>
+      <div class="col-md-7 mb-3">
+        <label for="razonSocial" class="form-label">Razón Social</label>
+        <input
+          type="text"
+          class="form-control"
+          id="razonSocial"
+          formControlName="razonSocial"
+          maxlength="150"
+          [class.is-invalid]="form.get('razonSocial')?.invalid && form.get('razonSocial')?.touched"
+        />
+        <div class="invalid-feedback">
+          La razón social es requerida
+        </div>
+      </div>
+      <!-- Contacto -->
+      <div class="col-md-6 mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          formControlName="email"
+          maxlength="64"
+          [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched"
+        />
+        <div class="invalid-feedback">
+          El email es requerido y debe ser válido
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="paginaWeb" class="form-label">Página Web</label>
+        <input
+          type="url"
+          class="form-control"
+          id="paginaWeb"
+          formControlName="paginaWeb"
+          maxlength="100"
+        />
+      </div>
+
+      <!-- Dirección -->
+      <div class="col-md-6 mb-3">
+        <label for="dirCallle" class="form-label">Calle</label>
+        <input
+          type="text"
+          class="form-control"
+          id="dirCallle"
+          formControlName="dirCallle"
+          maxlength="100"
+          [class.is-invalid]="form.get('dirCallle')?.invalid && form.get('dirCallle')?.touched"
+        />
+        <div class="invalid-feedback">
+          La calle es requerida
+        </div>
+      </div>
+      <div class="col-md-2 mb-3">
+        <label for="dirNumero" class="form-label">Número</label>
+        <input
+          type="number"
+          class="form-control"
+          id="dirNumero"
+          formControlName="dirNumero"
+        />
+      </div>
+      <div class="col-md-2 mb-3">
+        <label for="dirPiso" class="form-label">Piso</label>
+        <input
+          type="number"
+          class="form-control"
+          id="dirPiso"
+          formControlName="dirPiso"
+        />
+      </div>
+      <div class="col-md-2 mb-3">
+        <label for="dirOficina" class="form-label">Oficina</label>
+        <input
+          type="number"
+          class="form-control"
+          id="dirOficina"
+          formControlName="dirOficina"
+        />
+      </div>
+
+      <!-- Ubicación -->
+      <div class="col-md-4 mb-3">
+        <label for="codPais" class="form-label">País</label>
+        <select
+          class="form-select"
+          id="codPais"
+          formControlName="codPais"
+          (change)="clickPais($event)"
+          [class.is-invalid]="form.get('codPais')?.invalid && form.get('codPais')?.touched"
+        >
+          <option value="">Seleccione un país</option>
+          <option *ngFor="let pais of listaPaises" [value]="pais.codPais">
+            {{ pais.pais }}
+          </option>
+        </select>
+        <div class="invalid-feedback">
+          El país es requerido
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="codRegion" class="form-label">Región</label>
+        <select
+          class="form-select"
+          id="codRegion"
+          formControlName="codRegion"
+          (change)="clickRegion($event)"
+          [class.is-invalid]="form.get('codRegion')?.invalid && form.get('codRegion')?.touched"
+        >
+          <option value="">Seleccione una región</option>
+          <option *ngFor="let region of listaRegiones" [value]="region.codRegion" 
+          [attr.data-descripcion]="region.region">
+            {{ region.region }}
+          </option>
+        </select>
+        <div class="invalid-feedback">
+          La región es requerida
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="codComuna" class="form-label">Comuna</label>
+        <select
+          class="form-select"
+          id="codComuna"
+          formControlName="codComuna"
+          [class.is-invalid]="form.get('codComuna')?.invalid && form.get('codComuna')?.touched"
+        >
+          <option value="">Seleccione una comuna</option>
+          <option *ngFor="let comuna of listaComunas" [value]="comuna.codComuna"  [attr.data-descripcion]="comuna.comunas">
+            {{ comuna.comunas }}
+          </option>
+        </select>
+        <div class="invalid-feedback">
+          La comuna es requerida
+        </div>
+      </div>
+
+      <!-- Actividad -->
+      <div class="col-md-12 mb-3">
+        <label for="descActividad" class="form-label">Descripción Actividad</label>
+        <input
+          type="text"
+          class="form-control"
+          id="descActividad"
+          formControlName="descActividad"
+          maxlength="100"
+          [class.is-invalid]="form.get('descActividad')?.invalid && form.get('descActividad')?.touched"
+        />
+        <div class="invalid-feedback">
+          La descripción de actividad es requerida
+        </div>
+      </div>
+      <div class="col-md-9 mb-3">
+        <label for="codActividadSiiPri" class="form-label">Actividad SII Principal</label>
+        <select
+          class="form-select"
+          id="codActividadSiiPri"
+          formControlName="codActividadSiiPri"
+          [class.is-invalid]="form.get('codActividadSiiPri')?.invalid && form.get('codActividadSiiPri')?.touched"
+        >
+          <option value="">Seleccione una actividad</option>
+          <option *ngFor="let act of listaActividadesSii" [value]="act.codActividadSii">
+            {{ act.actividadSii }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Código Actividad SII Principal</label>
+        <input
+          type="text"
+          class="form-control form-control-solid"
+          id="codActividadSiiPriDisabled"
+          formControlName="codActividadSiiPri"
+          [disabled]="true"
+          [readOnly]="true"
+        />
+      </div>
+      <div class="col-md-9 mb-3">
+        <label for="codActividadSiiSec" class="form-label">Actividad SII Secundaria</label>
+        <select
+          class="form-select"
+          id="codActividadSiiSec"
+          formControlName="codActividadSiiSec"
+        >
+          <option value="">Seleccione una actividad</option>
+          <option *ngFor="let act of listaActividadesSii" [value]="act.codActividadSii">
+            {{ act.actividadSii }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-3 mb-3">
+        <label class="form-label">Código Actividad SII Secundaria</label>
+        <input
+          type="text"
+          class="form-control form-control-solid"
+          id="codActividadSiiSecDisabled"
+          formControlName="codActividadSiiSec"
+          [disabled]="true"
+          [readOnly]="true"
+        />
+      </div>
+      <!-- CMF -->
+      <div class="col-md-2 mb-3">
+        <label for="aplicaCmf" class="form-label">Aplica CMF</label>
+        <select
+          class="form-select"
+          id="aplicaCmf"
+          formControlName="aplicaCmf"
+        >
+          <option value="">Seleccione</option>
+          <option value="S">Sí</option>
+          <option value="N">No</option>
+        </select>
+      </div>
+      <div class="col-md-2 mb-3">
+        <label for="codigoCmf" class="form-label">Código CMF</label>
+        <input
+          type="text"
+          class="form-control"
+          id="codigoCmf"
+          formControlName="codigoCmf"
+          maxlength="10"
+        />
+      </div>
+      <div class="col-md-8 mb-3">
+        <label for="codActividadCmf" class="form-label">Actividad CMF</label>
+        <select
+          class="form-select"
+          id="codActividadCmf"
+          formControlName="codActividadCmf"
+        >
+          <option value="">Seleccione una actividad</option>
+          <option *ngFor="let act of listaActividadesCmf" [value]="act.codActividadCmf">
+            {{ act.actividadCmf }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="codSectorFinanCmf" class="form-label">Sector Financiero CMF</label>
+        <select
+          class="form-select"
+          id="codSectorFinanCmf"
+          formControlName="codSectorFinanCmf"
+        >
+          <option value="-1">Seleccione un sector financiero</option>
+          <option *ngFor="let sector of listaSectoresFinancierosCmf" [value]="sector.codSectorFinanCmf">
+            {{ sector.sectorFinanCmf }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="codCompInstitucionalCmf" class="form-label">Composición Institucional CMF</label>
+        <select
+          class="form-select"
+          id="codCompInstitucionalCmf"
+          formControlName="codCompInstitucionalCmf"
+        >
+          <option value="-1">Seleccione una composición</option>
+          <option *ngFor="let comp of listaComponentesInstitucionalesCmf" [value]="comp.codCompInstitucionalCmf">
+            {{ comp.compInstitucional }}
+          </option>
+        </select>
+      </div>
     </div>
   </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="closeModal()">
+    Cancelar
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="onSubmit()"
+    [disabled]="form.invalid || loading"
+  >
+    {{ loading ? 'Guardando...' : (isEdit ? 'Actualizar' : 'Guardar') }}
+  </button>
+</div>
