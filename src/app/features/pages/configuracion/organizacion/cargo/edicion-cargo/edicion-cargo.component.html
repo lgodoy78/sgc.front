@@ -1,0 +1,131 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ isEdit ? 'Editar' : 'Nuevo' }} Cargo</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="dismiss()"
+  ></button>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="nombreCargo" class="form-label">Nombre Cargo</label>
+        <input
+          #nombreCargoInput
+          type="text"
+          class="form-control"
+          id="nombreCargo"
+          formControlName="nombreCargo"
+          maxlength="100"
+          (change)="revisaExiste()"
+          [class.is-invalid]="
+            form.get('nombreCargo')?.invalid &&
+            form.get('nombreCargo')?.touched
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            form.get('nombreCargo')?.invalid &&
+            form.get('nombreCargo')?.touched
+          "
+        >
+          El nombre del cargo es requerido
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="codSucursal" class="form-label">Sucursal</label>
+        <select
+          class="form-select"
+          id="codSucursal" 
+          formControlName="codSucursal" 
+          [class.is-invalid]="
+            form.get('codSucursal')?.invalid &&
+            form.get('codSucursal')?.touched
+          "
+        >
+          <option value="-1">Seleccione una sucursal</option>
+          <option *ngFor="let sucursal of sucursales" [value]="sucursal.codSucursal">
+            {{ sucursal.sucursal }}
+          </option>
+        </select>
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            form.get('codSucursal')?.invalid &&
+            form.get('codSucursal')?.touched
+          "
+        >
+          La sucursal es requerida
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-3">
+        <label for="gerencia1" class="form-label">SubIdentidad 1</label>
+        <select
+          class="form-select"
+          id="gerencia1" 
+          formControlName="idGerencia1" 
+        >
+          <option value="-1">Seleccione una subidentidad</option>
+          <option *ngFor="let subidentidad of subidentidades" [value]="subidentidad.idGerencia">
+            {{ subidentidad.subidentidad }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="gerencia2" class="form-label">SubIdentidad 2</label>
+        <select
+          class="form-select"
+          id="gerencia2"
+          formControlName="idGerencia2"  
+        >
+          <option value="-1">Seleccione una subidentidad</option>
+          <option *ngFor="let subidentidad of subidentidades" [value]="subidentidad.idGerencia">
+            {{ subidentidad.subidentidad }}
+          </option>
+        </select>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="gerencia3" class="form-label">SubIdentidad 3</label>
+        <select
+          class="form-select"
+          id="gerencia3" 
+          formControlName="idGerencia3"  
+        >
+          <option value="-1">Seleccione una subidentidad</option>
+          <option *ngFor="let subidentidad of subidentidades" [value]="subidentidad.idGerencia">
+            {{ subidentidad.subidentidad }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mb-3">
+        <label for="funciones" class="form-label">Funciones</label>
+        <textarea
+          class="form-control"
+          id="funciones"
+          formControlName="funciones"
+          rows="3"
+          placeholder="Describa las funciones del cargo..."
+        ></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="dismiss()">
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="loading || form.invalid"
+    >
+      {{ isEdit ? 'Actualizar' : 'Guardar' }}
+    </button>
+  </div>
+</form>

@@ -40,22 +40,32 @@ export const routes: Routes = [
         data: {breadcrumb: 'Dashboard / Inicio'}
       },
       {
-        path: 'configuracion/empresa',
+        path: 'configuracion/organizacion/empresa',
         loadComponent: () => import('./features/pages/configuracion/organizacion/empresa/lista-empresas/lista-empresas.component'),
         data: { breadcrumb: 'Configuración / Estructura Organizativa' },
       },
       {
-        path: 'configuracion/sucursal',
+        path: 'configuracion/organizacion/sucursal',
         loadComponent: () => import('./features/pages/configuracion/organizacion/sucursal/lista-sucursal/lista-sucursal.component'),
         data: { breadcrumb: 'Configuración / Estructura Organizativa' },
       },
       {
-        path: 'configuracion/macro-procesos',
+        path: 'configuracion/organizacion/subidentidad',
+        loadComponent: () => import('./features/pages/configuracion/organizacion/subidentidad/lista-subidentidad/lista-subidentidad.component'),
+        data: { breadcrumb: 'Configuración / Estructura Organizativa' },
+      },
+      {
+        path: 'configuracion/organizacion/cargos',
+        loadComponent: () => import('./features/pages/configuracion/organizacion/cargo/lista-cargo/lista-cargo.component'),
+        data: { breadcrumb: 'Configuración / Estructura Organizativa' },
+      },
+      {
+        path: 'configuracion/procesos/macro-procesos',
         loadComponent: () => import('./features/pages/configuracion/procesos/macro-procesos/lista-macro-procesos/lista-macro-procesos.component'),
         data: { breadcrumb: 'Configuración / Procesos' },
       },
       {
-        path: 'configuracion/procesos',
+        path: 'configuracion/procesos/procesos',
         loadComponent: () => import('./features/pages/configuracion/procesos/procesos/lista-procesos/lista-procesos.component'),
         data: { breadcrumb: 'Configuración / Procesos' },
       }

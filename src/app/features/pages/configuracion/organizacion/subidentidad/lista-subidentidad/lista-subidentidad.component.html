@@ -8,10 +8,10 @@
 
   <div *ngIf="!loading" class="card shadow-sm">
     <div class="card-header">
-      <h3 class="card-title">Sucursal</h3>
+      <h3 class="card-title">SubIdentidades</h3>
       <div class="card-toolbar">
         <button class="btn btn-primary" (click)="editar()">
-          <i class="fas fa-plus me-2"></i>Nueva Sucursal
+          <i class="fas fa-plus me-2"></i>Nueva SubIdentidad
         </button>
       </div>
     </div>
@@ -25,14 +25,9 @@
           id="dtTable"
         >
           <thead class="table-dark">
-            <tr>
-              <th scope="col">CÓDIGO</th>
-              <th scope="col">SUCURSAL</th>
-              <th scope="col">CALLE</th>
-              <th scope="col">N°</th>
-              <th scope="col">PISO</th>
-              <th scope="col">OFICINA</th>
-              <th scope="col">COMUNA</th>
+            <tr> 
+              <th scope="col">NOMBRE SUBIDENTIDAD</th>
+              <th scope="col">SUBIDENTIDAD</th>
               <th
                 scope="col"
                 data-priority="1"
@@ -43,46 +38,31 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let sucursal of this.listadoSucursal; index as i">
-              <td>
-                <span>{{ sucursal.codSucursal }}</span>
+            <tr *ngFor="let subIdentidad of this.listadoSubIdentidad; index as i"> 
+              <td class="text-success-emphasis">
+                <span>{{ subIdentidad.nombreGerencia }}</span>
               </td>
               <td class="text-success-emphasis">
-                <span>{{ sucursal.sucursal }}</span>
-              </td>
-              <td>
-                <span>{{ sucursal.dirCallle }}</span>
-              </td>
-              <td>
-                <span>{{ sucursal.dirNumero }}</span>
-              </td>
-              <td>
-                <span>{{ sucursal.dirPiso }}</span>
-              </td>
-              <td>
-                <span>{{ sucursal.dirOficina }}</span>
-              </td>
-              <td>
-                <span>{{ sucursal.comuna?.comunas }}</span>
+                <span>{{ subIdentidad.subidentidad }}</span>
               </td>
               <td class="text-center">
                 <button
                   class="btn btn-sm btn-clean btn-icon me-2"
-                  (click)="editar(sucursal)"
-                  ngbTooltip="Editar"
+                  (click)="editar(subIdentidad)"
+                  [ngbTooltip]="'Editar'"
                   #t="ngbTooltip"
                   triggers="manual"
                   (mouseenter)="t.open()"
                   (mouseleave)="t.close()"
                 >
                   <i class="fad fa-edit text-primary"></i>
-                </button>
+                </button> 
                 <button
                   class="btn btn-sm btn-clean btn-icon"
-                  (click)="eliminar(sucursal.codSucursal)"
-                  ngbTooltip="Eliminar"
+                  (click)="eliminar(subIdentidad.idGerencia)"
+                  [ngbTooltip]="'Eliminar'"
                   #t2="ngbTooltip"
-                 triggers="manual"
+                  triggers="manual"
                   (mouseenter)="t2.open()"
                   (mouseleave)="t2.close()"
                 >

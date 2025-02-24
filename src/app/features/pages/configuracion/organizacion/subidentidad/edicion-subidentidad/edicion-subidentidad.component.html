@@ -1,0 +1,80 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ isEdit ? 'Editar' : 'Nueva' }} SubIdentidad</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="dismiss()"
+  ></button>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label for="nombreGerencia" class="form-label">Nombre SubIdentidad</label>
+        <input
+          type="text"
+          class="form-control"
+          id="nombreGerencia"
+          formControlName="nombreGerencia"
+          maxlength="100"
+          [class.is-invalid]="
+            form.get('nombreGerencia')?.invalid &&
+            form.get('nombreGerencia')?.touched
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            form.get('nombreGerencia')?.invalid &&
+            form.get('nombreGerencia')?.touched
+          "
+        >
+          El nombre de la subidentidad es requerido
+        </div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label for="subidentidad" class="form-label">SubIdentidad</label>
+        <input 
+          #subIdentidadInput
+          type="text"
+          class="form-control"
+          id="subidentidad"
+          formControlName="subidentidad"
+          maxlength="100"
+          (change)="revisaExiste()" 
+          [class.is-invalid]="
+            form.get('subidentidad')?.invalid && form.get('subidentidad')?.touched
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            form.get('subidentidad')?.invalid &&
+            form.get('Subidesubidentidadntidad')?.touched
+          "
+        >
+          La subidentidad es requerida
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="dismiss()">
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="loading || form.invalid"
+    >
+      <span
+        *ngIf="loading"
+        class="spinner-border spinner-border-sm me-1"
+        role="status"
+        aria-hidden="true"
+      ></span>
+      {{ isEdit ? 'Actualizar' : 'Crear' }}
+    </button>
+  </div>
+</form>

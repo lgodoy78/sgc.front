@@ -92,7 +92,7 @@ export class EdicionEmpresaComponent implements AfterViewInit {
       this.empresa.codRegion = this.empresa.codRegion === null ? '' : this.empresa.codRegion;
       this.empresa.codPais = this.empresa.codPais === null ? '' : this.empresa.codPais;
       this.empresa.codActividadSiiPri = this.empresa.codActividadSiiPri === null ? '' : this.empresa.codActividadSiiPri;
-      this.empresa.codActividadSiiSec = this.empresa.codActividadSiiSec === null ? null : this.empresa.codActividadSiiSec;
+      this.empresa.codActividadSiiSec = this.empresa.codActividadSiiSec === null ? '' : this.empresa.codActividadSiiSec;
       this.empresa.codActividadCmf = this.empresa.codActividadCmf === null ? '' : this.empresa.codActividadCmf;
       this.empresa.codSectorFinanCmf = this.empresa.codSectorFinanCmf === null ? -1 : this.empresa.codSectorFinanCmf;
       this.empresa.codCompInstitucionalCmf = this.empresa.codCompInstitucionalCmf === null ? -1 : this.empresa.codCompInstitucionalCmf;

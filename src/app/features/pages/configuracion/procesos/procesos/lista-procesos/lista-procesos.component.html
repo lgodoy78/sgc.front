@@ -51,14 +51,24 @@
               </td>
               <td class="text-center">
                 <button
-                  class="btn btn-sm btn-clean btn-icon"
+                  class="btn btn-sm btn-clean btn-icon me-2"
                   (click)="editar(proceso)"
+                  ngbTooltip="Editar"
+                  #t="ngbTooltip"
+                  triggers="manual"
+                  (mouseenter)="t.open()"
+                  (mouseleave)="t.close()"
                 >
-                  <i class="fad fa-pencil text-primary"></i>
+                  <i class="fad fa-edit text-primary"></i>
                 </button>
                 <button
                   class="btn btn-sm btn-clean btn-icon"
-                  (click)="eliminar(this.listadoProcesos[i])"
+                  (click)="eliminar(proceso.codProceso)"
+                  ngbTooltip="Eliminar"
+                  #t2="ngbTooltip"
+                 triggers="manual"
+                  (mouseenter)="t2.open()"
+                  (mouseleave)="t2.close()"
                 >
                   <i class="fad fa-trash text-danger"></i>
                 </button>
