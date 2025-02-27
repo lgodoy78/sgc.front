@@ -52,7 +52,8 @@ export default class LoginComponent {
       
       if (!this.validateCredentials(email, password)) return;
   
-      var response = await this.authService.login(email, password); 
+      const passEnc = encodeURIComponent(this.authService.encryptMessage(password)); 
+      var response = await this.authService.login(email, passEnc); 
       if (!response){
         this.errorMessage.set("Credenciales inválidas");
         return;

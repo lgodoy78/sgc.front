@@ -49,8 +49,8 @@ export class UserDataComponent implements OnInit {
   getEmpresa() {
     
     this.empresaService.getEmpresa(this.authService.getUsuarioState.rutEmpresa).subscribe({
-      next: (data) => {  
-        this.datosEmpresa = data[0];
+      next: (data) => {   
+        this.datosEmpresa = data;
       },
       error: (e) => {
         console.log('error', e);

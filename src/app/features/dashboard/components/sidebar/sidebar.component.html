@@ -33,9 +33,12 @@
       </div>
     </div>
 
-    <ul class="sidebar-menu">
+    <ul
+      class="sidebar-menu"
+      style="height: 100vh; overflow-y: auto; overflow-x: hidden"
+    >
       <li class="dropdown">
-        <a href="#" style="background: rgba(var(--dt-row-hover), 0.075);">
+        <a href="#" style="background: rgba(var(--dt-row-hover), 0.075)">
           <i class="me-3 fa-solid fa-gauge"></i>
           <span *ngIf="!isCollapsed()">Dashboard</span>
         </a>
@@ -43,7 +46,10 @@
           <!-- Estructura Organizativa -->
           <li class="dropdown">
             <a routerLink="inicio">
-              <i class="fad fa-home me-3 menu-icon" style="font-size: 1.3rem;width: 20px;"></i>
+              <i
+                class="fad fa-home me-3 menu-icon"
+                style="font-size: 1.3rem; width: 20px"
+              ></i>
               <span class="menu-text" *ngIf="!isCollapsed()">Inicio</span>
             </a>
           </li>
@@ -52,11 +58,9 @@
       <!-- Iteramos menú -->
       <ng-container *ngFor="let item of menuItems">
         <li class="dropdown">
-          <a href="#" style="background: rgba(var(--dt-row-hover), 0.075);">
+          <a href="#" style="background: rgba(var(--dt-row-hover), 0.075)">
             <i class="me-3" [class]="item.icono"></i>
-            <span *ngIf="!isCollapsed()">{{
-              item.descripcion
-            }}</span>
+            <span *ngIf="!isCollapsed()">{{ item.descripcion }}</span>
           </a>
 
           <!-- Submenús anidados -->
@@ -65,10 +69,15 @@
               <a
                 href="#"
                 (click)="child.hijos ? toggleTree(child.id, $event) : null"
-                [class.has-hijos]="child.hijos" class="nav-link-side"
+                [class.has-hijos]="child.hijos"
+                class="nav-link-side"
               >
-                <i [class]="child.icono" class="menu-icon me-3" style="font-size: 1.3rem;width: 20px;"></i>
-                <span class="menu-text" >{{ child.descripcion }}</span>
+                <i
+                  [class]="child.icono"
+                  class="menu-icon me-3"
+                  style="font-size: 1.3rem; width: 20px"
+                ></i>
+                <span class="menu-text">{{ child.descripcion }}</span>
                 <i
                   *ngIf="child.hijos && !isCollapsed()"
                   class="fas float-end"
@@ -84,8 +93,19 @@
                 *ngIf="child.hijos"
               >
                 <li *ngFor="let subChild of child.hijos">
-                  <a href="#" routerLink="{{ subChild.ruta }}" class="nav-link-side">
-                    <i [class]="subChild.icono" style="font-size: 0.9rem;color: green;margin-right: 10px;"></i>
+                  <a
+                    href="#"
+                    routerLink="{{ subChild.ruta }}"
+                    class="nav-link-side"
+                  >
+                    <i
+                      [class]="subChild.icono"
+                      style="
+                        font-size: 0.9rem;
+                        color: green;
+                        margin-right: 10px;
+                      "
+                    ></i>
                     <span>{{ subChild.descripcion }}</span>
                   </a>
                 </li>

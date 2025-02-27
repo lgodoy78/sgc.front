@@ -2,7 +2,8 @@ import { effect, inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { filter, lastValueFrom, Observable, tap } from 'rxjs';
-import { Utilities } from './utilities';
+import { Utilities } from './utilities'; 
+import * as CryptoJS from 'crypto-js';
 
 export interface UsuarioInterface {
   idUsuario: number;
@@ -142,5 +143,21 @@ export class AuthService {
   }
   get getUsuarioState() {
     return this.usuarioState();
+  }
+
+  
+  encryptMessage(message: string): any {
+    const localKey = 'sgc2024sgc2024sg';
+    const key = CryptoJS.enc.Utf8.parse(localKey);
+    const iv = CryptoJS.enc.Utf8.parse(localKey);
+
+    return CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(message), key,
+      {
+        keySize: 128,
+        iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+      });
+
   }
 }

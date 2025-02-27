@@ -29,12 +29,15 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError(error => {
       switch (error.status) {
         case 401:
-          return handle401Error(next, authService, router); 
+          return handle401Error(next, authService, router,modalTypeService); 
         case 412:
           registrarCsrfToken(error.headers);
           req = agregarCsrfToken(req);
           return next(req);
         default: 
+            if (error.error.codigo === 401) {
+              return handle401Error(next, authService, router,modalTypeService); 
+            }
             mensajeError = error.statusText;
            // modalTypeService.openErrorModalMessage('Error', 'El servidor se encuentra ocupado, por favor reintente la acción');
           break;
@@ -100,10 +103,11 @@ function setToken(name: string, token: string) {
 function handle401Error( 
   next: HttpHandlerFn,
   authService: AuthService,
-  router: Router
-) {
-  console.log('Error 400');
+  router: Router,
+  modalTypeService: ModalTypeService
+) { 
   authService.logout();
   router.navigate(['/login']);
+  modalTypeService.openWarningModalMessage('Cierre de Sesión', 'Su sesión ha expirado.');
   return throwError(() => 'Error de autenticación');
 }
