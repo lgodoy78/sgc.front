@@ -1,0 +1,172 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ isEdit ? "Editar" : "Nueva" }} Sanción Penal</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="closeModal()"
+  ></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row"> 
+      <div class="col-md-12 mb-3">
+        <label for="clasePena" class="form-label">Clase de Pena</label>
+        <input
+          #SancionesPenalesInput
+          type="text"
+          class="form-control"
+          id="clasePena"
+          formControlName="clasePena"
+          maxlength="100"
+          (change)="revisaExiste()"
+          [class.is-invalid]="
+            form.get('clasePena')?.invalid &&
+            form.get('clasePena')?.touched
+          "
+        />
+        <div class="invalid-feedback">
+          Clase de Pena es requerido
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <label for="pena" class="form-label">Pena</label>
+        <input
+          type="text"
+          class="form-control"
+          id="pena"
+          formControlName="pena"
+          maxlength="100"
+          (change)="revisaExiste()"
+          [class.is-invalid]="
+            form.get('pena')?.invalid && form.get('pena')?.touched
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            form.get('pena')?.invalid && form.get('pena')?.touched
+          "
+        >
+          Pena es requerido
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <label for="grado" class="form-label">Grado</label>
+        <input
+          type="text"
+          class="form-control"
+          id="grado"
+          formControlName="grado"
+          maxlength="100"
+          (change)="revisaExiste()"
+          [class.is-invalid]="
+            form.get('grado')?.invalid && form.get('grado')?.touched
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            form.get('grado')?.invalid && form.get('grado')?.touched
+          "
+        >
+          Grado es requerido
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 mb-3">
+        <label for="anosPena" class="form-label">Años de Pena</label>
+        <input
+          type="text"
+          class="form-control"
+          id="anosPena"
+          formControlName="anosPena"
+          maxlength="100"
+          (change)="revisaExiste()"
+          [class.is-invalid]="
+            form.get('anosPena')?.invalid && form.get('anosPena')?.touched
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            form.get('anosPena')?.invalid && form.get('anosPena')?.touched
+          "
+        >
+          Años de Pena es requerido
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8 mb-3">
+        <label for="implicancia" class="form-label">Implicancia Años de Pena</label>
+        <input
+          type="text"
+          class="form-control"
+          id="implicancia"
+          formControlName="implicancia"
+          maxlength="50" 
+          [class.is-invalid]="
+            form.get('implicancia')?.invalid && form.get('implicancia')?.touched
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            form.get('implicancia')?.invalid && form.get('implicancia')?.touched
+          "
+        >
+          Implicancia Años de Pena es requerido
+        </div>
+      </div> 
+      <div class="col-md-4 mb-3">
+        <label for="colorImplicancia" class="form-label">Color Implicancia</label>
+        <input
+          type="color"
+          class="form-control pe-0 ps-0 pt-0 pb-0"
+          id="colorImplicancia"
+          formControlName="colorImplicancia"
+          maxlength="100" 
+          style="height: 38px"
+          [class.is-invalid]="
+            form.get('colorImplicancia')?.invalid &&
+            form.get('colorImplicancia')?.touched
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            form.get('colorImplicancia')?.invalid &&
+            form.get('colorImplicancia')?.touched
+          "
+        >
+          Color Implicancia es requerido
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="closeModal()">
+    Cancelar
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="onSubmit()"
+    [disabled]="form.invalid || loading"
+  >
+    <span
+      *ngIf="loading"
+      class="spinner-border spinner-border-sm me-1"
+      role="status"
+      aria-hidden="true"
+    ></span>
+    {{ isEdit ? "Actualizar" : "Guardar" }}
+  </button>
+</div>

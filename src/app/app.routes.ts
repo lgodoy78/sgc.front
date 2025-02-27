@@ -109,6 +109,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/pages/configuracion/ley/categoria/lista-categoria/lista-categoria.component'),
         data: { breadcrumb: 'Configuración / Ley' },
       },
+      {
+        path: 'configuracion/ley/sanciones-penales',
+        loadComponent: () => import('./features/pages/configuracion/ley/sanciones-penales/lista-sanciones-penales/lista-sanciones-penales.component'),
+        data: { breadcrumb: 'Configuración / Ley' },
+      },
       /*{
         path: 'admin',
         loadComponent: () => import('./admin.component'),

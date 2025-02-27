@@ -50,8 +50,8 @@ export class EdicionGrupoDelitoComponent {
     this.GrupoDelitoService.getSearchGrupoDelito(grupoDelito).subscribe({
       next: (data) => {
         if (data.length != 0){
-          this.toastService.showError('El código de Grupo de Delito ya existe');
-          this.form.controls['idGrupoDelito'].setValue('');
+          this.toastService.showError('Grupo de Delito ya existe');
+          this.form.controls['grupoDelitos'].setValue('');
 
             setTimeout(() => {
               this.GrupoDelitoInput.nativeElement.focus();
