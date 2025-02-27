@@ -63,6 +63,7 @@ export default class EdicionCargoComponent implements AfterViewInit {
       this.cargo.idGerencia3 = this.cargo.idGerencia3 === null ? -1 : this.cargo.idGerencia3; 
 
       this.form.patchValue(this.cargo);
+      this.form.controls['nombreCargo'].disable();
     }
   }
 
@@ -106,6 +107,7 @@ export default class EdicionCargoComponent implements AfterViewInit {
 
     this.loading = true;
 
+    this.form.controls['nombreCargo'].enable();
     const cargo: Cargo = this.form.value;
     cargo.codSucursal = cargo.codSucursal?.toString() === '-1' ? null : cargo.codSucursal;
     cargo.idGerencia1 = cargo.idGerencia1?.toString() === '-1' ? null : cargo.idGerencia1;
@@ -118,7 +120,7 @@ export default class EdicionCargoComponent implements AfterViewInit {
             this.toastService.showSuccess('Cargo actualizado correctamente');
             this.activeModal.close(true);
           },
-          error: (e) => {
+          error: (e) => {    
             this.loading = false;
             this.toastService.showError('Error al actualizar cargo: ' + e.error.mensaje);
           }
@@ -130,6 +132,7 @@ export default class EdicionCargoComponent implements AfterViewInit {
             this.activeModal.close(true);
           },
           error: (e) => {
+            this.form.controls['nombreCargo'].disable();
             this.loading = false;
             this.toastService.showError('Error al crear cargo: ' + e.error.mensaje);
           }

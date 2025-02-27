@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ isEdit ? "Editar" : "Nuevo" }} Grupo de Delito</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="closeModal()"
+  ></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row"> 
+      <div class="col-md-12 mb-3">
+        <label for="grupoDelitos" class="form-label">Grupo de Delito</label>
+        <input
+          type="text"
+          class="form-control"
+          id="grupoDelitos"
+          formControlName="grupoDelitos"
+          maxlength="100"
+          (change)="revisaExiste()"
+          [class.is-invalid]="
+            form.get('grupoDelitos')?.invalid &&
+            form.get('grupoDelitos')?.touched
+          "
+        />
+        <div class="invalid-feedback">
+          Grupo de Delito es requerido
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="closeModal()">
+    Cancelar
+  </button>
+  <button
+    type="button"
+    class="btn btn-primary"
+    (click)="onSubmit()"
+    [disabled]="form.invalid || loading"
+  >
+    <span
+      *ngIf="loading"
+      class="spinner-border spinner-border-sm me-1"
+      role="status"
+      aria-hidden="true"
+    ></span>
+    {{ isEdit ? "Actualizar" : "Guardar" }}
+  </button>
+</div>

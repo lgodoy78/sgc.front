@@ -302,8 +302,7 @@ export class EdicionEmpresaComponent implements AfterViewInit {
         data.codActividadCmf = data.codActividadCmf === '' ? null : data.codActividadCmf;
         data.codSectorFinanCmf = data.codSectorFinanCmf?.toString() === '-1' ? null : data.codSectorFinanCmf;
         data.codCompInstitucionalCmf = data.codCompInstitucionalCmf?.toString() === '-1' ? null : data.codCompInstitucionalCmf;
-
-        console.log(data)
+ 
 
         if (this.isEdit) {
           this.empresaService.updateEmpresa(data).subscribe({

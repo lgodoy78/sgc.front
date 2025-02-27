@@ -68,7 +68,47 @@ export const routes: Routes = [
         path: 'configuracion/procesos/procesos',
         loadComponent: () => import('./features/pages/configuracion/procesos/procesos/lista-procesos/lista-procesos.component'),
         data: { breadcrumb: 'Configuración / Procesos' },
-      }
+      },
+      {
+        path: 'configuracion/procesos/tipo-actividad', 
+        loadComponent: () => import('./features/pages/configuracion/procesos/tipo-actividad/lista-tipo-actividad/lista-tipo-actividad.component'),
+        data: { breadcrumb: 'Configuración / Procesos' },
+      },
+      {
+        path: 'configuracion/procesos/modalidad-actividad', 
+        loadComponent: () => import('./features/pages/configuracion/procesos/modalidad-actividad/lista-modalidad-actividad/lista-modalidad-actividad.component'),
+        data: { breadcrumb: 'Configuración / Procesos' },
+      },
+      {
+        path: 'configuracion/procesos/agrupacion-control',
+        loadComponent: () => import('./features/pages/configuracion/procesos/agrupacion-control/lista-agrupacion-control/lista-agrupacion-control.component'),
+        data: { breadcrumb: 'Configuración / Procesos' },
+      },
+      {
+        path: 'configuracion/procesos/agrupacion-riesgo',
+        loadComponent: () => import('./features/pages/configuracion/procesos/agrupacion-riesgo/lista-agrupacion-riesgo/lista-agrupacion-riesgo.component'),
+        data: { breadcrumb: 'Configuración / Procesos' },
+      },
+      {
+        path: 'configuracion/normas/tipo-norma',
+        loadComponent: () => import('./features/pages/configuracion/normas/tipo-norma/lista-tipo-norma/lista-tipo-norma.component'),
+        data: { breadcrumb: 'Configuración / Normas' },
+      },
+      {
+        path: 'configuracion/normas/tipo-numeral',
+        loadComponent: () => import('./features/pages/configuracion/normas/tipo-numeral/lista-tipo-numeral/lista-tipo-numeral.component'),
+        data: { breadcrumb: 'Configuración / Normas' },
+      },
+      {
+        path: 'configuracion/ley/grupo-delito',
+        loadComponent: () => import('./features/pages/configuracion/ley/grupo-delito/lista-grupo-delito/lista-grupo-delito.component'),
+        data: { breadcrumb: 'Configuración / Ley' },
+      },
+      {
+        path: 'configuracion/ley/categoria',
+        loadComponent: () => import('./features/pages/configuracion/ley/categoria/lista-categoria/lista-categoria.component'),
+        data: { breadcrumb: 'Configuración / Ley' },
+      },
       /*{
         path: 'admin',
         loadComponent: () => import('./admin.component'),

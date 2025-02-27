@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">{{ isEdit ? 'Editar' : 'Nueva' }} SubIdentidad</h4>
+  <h4 class="modal-title">{{ isEdit ? "Editar" : "Nueva" }} Categoria</h4>
   <button
     type="button"
     class="btn-close"
@@ -10,51 +10,48 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="modal-body">
     <div class="row">
-      <div class="col-md-6 mb-3">
-        <label for="nombreGerencia" class="form-label">Nombre SubIdentidad</label>
+      <div class="col-md-8 mb-3">
+        <label for="categorias" class="form-label">Categoria</label>
+        <input
+          #categoriaInput
+          type="text"
+          class="form-control"
+          id="categorias"
+          formControlName="categorias"
+          maxlength="100"
+          (change)="revisaExiste()"
+          [class.is-invalid]="
+            form.get('categorias')?.invalid && form.get('categorias')?.touched
+          "
+        />
+        <div
+          class="invalid-feedback"
+          *ngIf="
+            form.get('categorias')?.invalid && form.get('categorias')?.touched
+          "
+        >
+          El nombre de la abreviado es requerido
+        </div>
+      </div>
+      <div class="col-md-4 mb-3">
+        <label for="abreviado" class="form-label">Abreviado</label>
         <input
           type="text"
           class="form-control"
-          id="nombreGerencia"
-          formControlName="nombreGerencia"
-          maxlength="100"
+          id="abreviado"
+          formControlName="abreviado"
+          maxlength="10"
           [class.is-invalid]="
-            form.get('nombreGerencia')?.invalid &&
-            form.get('nombreGerencia')?.touched
+            form.get('abreviado')?.invalid && form.get('abreviado')?.touched
           "
         />
         <div
           class="invalid-feedback"
           *ngIf="
-            form.get('nombreGerencia')?.invalid &&
-            form.get('nombreGerencia')?.touched
+            form.get('abreviado')?.invalid && form.get('abreviado')?.touched
           "
         >
-          El nombre de la subidentidad es requerido
-        </div>
-      </div>
-      <div class="col-md-6 mb-3">
-        <label for="subidentidad" class="form-label">SubIdentidad</label>
-        <input 
-          #subIdentidadInput
-          type="text"
-          class="form-control"
-          id="subidentidad"
-          formControlName="subidentidad"
-          maxlength="100"
-          (change)="revisaExiste()" 
-          [class.is-invalid]="
-            form.get('subidentidad')?.invalid && form.get('subidentidad')?.touched
-          "
-        />
-        <div
-          class="invalid-feedback"
-          *ngIf="
-            form.get('subidentidad')?.invalid &&
-            form.get('subidentidad')?.touched
-          "
-        >
-          La subidentidad es requerida
+          La abreviado es requerida
         </div>
       </div>
     </div>
@@ -74,7 +71,7 @@
         role="status"
         aria-hidden="true"
       ></span>
-      {{ isEdit ? 'Actualizar' : 'Crear' }}
+      {{ isEdit ? "Actualizar" : "Crear" }}
     </button>
   </div>
 </form>

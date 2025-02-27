@@ -1,0 +1,78 @@
+<div class="container-fluid py-4">
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading" class="card shadow-sm">
+    <div class="card-header">
+      <h3 class="card-title">Tipo de Norma</h3>
+      <div class="card-toolbar">
+        <button class="btn btn-primary" (click)="editar()">
+          <i class="fas fa-plus me-2"></i>Nuevo Tipo de Norma
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="table table-hover table-head-custom row-border hover"
+          id="dtTable"
+        >
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">SIGLA</th>
+              <th scope="col">DESCRIPCIÓN</th> 
+              <th
+                scope="col"
+                data-priority="1"
+                class="text-center" 
+              >
+                ACCIÓN
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tipoNorma of this.listadoTipoNorma; index as i">
+              <td>
+                <span>{{ tipoNorma.codTipoNorma }}</span>
+              </td>
+              <td class="text-success-emphasis">
+                <span>{{ tipoNorma.norma }}</span>
+              </td> 
+              <td class="text-center">
+                <button
+                  class="btn btn-sm btn-clean btn-icon me-2"
+                  (click)="editar(tipoNorma)"
+                  ngbTooltip="Editar"
+                  #t="ngbTooltip"
+                  triggers="manual"
+                  (mouseenter)="t.open()"
+                  (mouseleave)="t.close()"
+                >
+                  <i class="fad fa-edit text-primary"></i>
+                </button>
+                <button
+                  class="btn btn-sm btn-clean btn-icon"
+                  (click)="eliminar(tipoNorma.codTipoNorma)"
+                  ngbTooltip="Eliminar"
+                  #t2="ngbTooltip"
+                 triggers="manual"
+                  (mouseenter)="t2.open()"
+                  (mouseleave)="t2.close()"
+                >
+                  <i class="fad fa-trash text-danger"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

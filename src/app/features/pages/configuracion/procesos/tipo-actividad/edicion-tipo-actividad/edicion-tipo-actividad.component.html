@@ -1,0 +1,62 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    {{ isEdit ? "Editar" : "Nuevo" }} Tipo de Actividad Control
+  </h5>
+  <button type="button" class="btn-close" (click)="closeModal()"></button>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-3 mb-3">
+        <label for="codTipoActividad" class="form-label">Código</label>
+        <input
+          type="text"
+          class="form-control"
+          id="codTipoActividad"
+          formControlName="codTipoActividad"
+          [readonly]="isEdit"
+          #tipoActividadInput
+          maxlength="5"
+          (blur)="revisaExiste($event)"
+          [class.is-invalid]="
+            form.get('codTipoActividad')?.invalid &&
+            form.get('codTipoActividad')?.touched
+          "
+        />
+        <div class="invalid-feedback">El código es requerido</div>
+      </div>
+      <div class="col-md-9 mb-3">
+        <label for="desTipoActividad" class="form-label">Descripción</label>
+        <input
+          type="text"
+          class="form-control"
+          id="desTipoActividad"
+          formControlName="desTipoActividad"
+          [class.is-invalid]="
+            form.get('desTipoActividad')?.invalid &&
+            form.get('desTipoActividad')?.touched
+          "
+        />
+        <div class="invalid-feedback">La descripción es requerido</div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="closeModal()">
+      Cancelar
+    </button>
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="!form.valid || loading"
+    >
+      <span
+        class="spinner-border spinner-border-sm me-1"
+        role="status"
+        aria-hidden="true"
+        *ngIf="loading"
+      ></span>
+      Guardar
+    </button>
+  </div>
+</form>

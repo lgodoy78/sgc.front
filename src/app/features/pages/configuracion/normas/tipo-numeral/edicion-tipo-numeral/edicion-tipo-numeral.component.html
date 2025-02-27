@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">{{ isEdit ? "Editar" : "Nuevo" }} Macro Proceso</h4>
+  <h4 class="modal-title">{{ isEdit ? "Editar" : "Nuevo" }} Tipo de Numeral</h4>
   <button
     type="button"
     class="btn-close"
@@ -11,38 +11,38 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col-md-3 mb-3">
-        <label for="codMacroProceso" class="form-label">Código</label>
+        <label for="codTipo" class="form-label">Sigla</label>
         <input
-          #macroProcesoInput
+          #tipoNumeralInput
           type="text"
           class="form-control"
-          id="codMacroProceso"
-          formControlName="codMacroProceso"
+          id="codTipo"
+          formControlName="codTipo"
           maxlength="5"
           (change)="revisaExiste($event)"
           [class.is-invalid]="
-            form.get('codMacroProceso')?.invalid &&
-            form.get('codMacroProceso')?.touched
+            form.get('codTipo')?.invalid &&
+            form.get('codTipo')?.touched
           "
         />
-        <div class="invalid-feedback">El código es requerido</div>
+        <div class="invalid-feedback">La Sigla es requerido</div>
       </div>
 
       <div class="col-md-9 mb-3">
-        <label for="macroProcesos" class="form-label">Macro Proceso</label>
+        <label for="desTipoNumeral" class="form-label">Descripción</label>
         <input
           type="text"
           class="form-control"
-          id="macroProcesos"
-          formControlName="macroProcesos"
-          maxlength="100"
+          id="desTipoNumeral"
+          formControlName="desTipoNumeral"
+          maxlength="20"
           [class.is-invalid]="
-            form.get('macroProcesos')?.invalid &&
-            form.get('macroProcesos')?.touched
+            form.get('desTipoNumeral')?.invalid &&
+            form.get('desTipoNumeral')?.touched
           "
         />
         <div class="invalid-feedback">
-          El nombre del macro proceso es requerido
+          La Descripción es requerido
         </div>
       </div>
     </div>

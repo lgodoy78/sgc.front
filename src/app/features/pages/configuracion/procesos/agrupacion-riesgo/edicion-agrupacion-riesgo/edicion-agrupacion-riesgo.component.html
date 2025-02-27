@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">{{ isEdit ? "Editar" : "Nuevo" }} Macro Proceso</h4>
+  <h4 class="modal-title">{{ isEdit ? "Editar" : "Nueva" }} Agrupación de riesgo</h4>
   <button
     type="button"
     class="btn-close"
@@ -11,38 +11,38 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="row">
       <div class="col-md-3 mb-3">
-        <label for="codMacroProceso" class="form-label">Código</label>
+        <label for="codAgrupador" class="form-label">Código</label>
         <input
-          #macroProcesoInput
+          #agrupacionRiesgoInput
           type="text"
           class="form-control"
-          id="codMacroProceso"
-          formControlName="codMacroProceso"
+          id="codAgrupador"
+          formControlName="codAgrupador"
           maxlength="5"
           (change)="revisaExiste($event)"
           [class.is-invalid]="
-            form.get('codMacroProceso')?.invalid &&
-            form.get('codMacroProceso')?.touched
+            form.get('codAgrupador')?.invalid &&
+            form.get('codAgrupador')?.touched
           "
         />
         <div class="invalid-feedback">El código es requerido</div>
       </div>
 
       <div class="col-md-9 mb-3">
-        <label for="macroProcesos" class="form-label">Macro Proceso</label>
+        <label for="agrupador" class="form-label">Descripción</label>
         <input
           type="text"
           class="form-control"
-          id="macroProcesos"
-          formControlName="macroProcesos"
+          id="agrupador"
+          formControlName="agrupador"
           maxlength="100"
           [class.is-invalid]="
-            form.get('macroProcesos')?.invalid &&
-            form.get('macroProcesos')?.touched
+            form.get('agrupador')?.invalid &&
+            form.get('agrupador')?.touched
           "
         />
         <div class="invalid-feedback">
-          El nombre del macro proceso es requerido
+          La Descripción es requerido
         </div>
       </div>
     </div>
